@@ -4,11 +4,12 @@ package com.escom.automata;
 @author: Morales Flores Victor Leonel
 */
 
+import java.util.Collection;
 import java.util.HashSet;
 
 public class Alphabet
 {
-  private HashSet<Character> symbols;
+  private Collection<Character> symbols;
 
   public Alphabet()
   {

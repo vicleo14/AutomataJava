@@ -1,4 +1,7 @@
 package com.escom.automata;
+
+import java.util.Collection;
+
 /*
 @author: Lara Cazares Jaime Arturo
 @author: Morales Flores Victor Leonel
@@ -6,26 +9,34 @@ package com.escom.automata;
 
 public class Transition
 {
-  private Character c;
-  private Integer nextState;
+  private Character initialSymbol,lastSymbol;
+  private Collection<Integer> nextStates;
 
   /*GETTERS*/
-  public Character getC()
+  public Character getInitialSymbol()
   {
-    return c;
+    return initialSymbol;
   }
-  public Integer getNextState()
+  public Character getLastSymbol()
   {
-    return nextState;
+    return lastSymbol;
+  }
+  public Collection<Integer> getNextStates()
+  {
+    return nextStates;
   }
   /*SETTERS*/
-  public void setC(Character c)
+  public void setInitialSymbol(Character c)
   {
-    this.c=c;
+    this.initialSymbol=c;
   }
-  public void setNextState(Integer nextState)
+  public void setLastSymbol(Character c)
   {
-    this.nextState=nextState;
+    this.lastSymbol=c;
+  }
+  public void setNextStates(Integer nextState)
+  {
+    this.nextStates.add(nextState);
   }
   
   
