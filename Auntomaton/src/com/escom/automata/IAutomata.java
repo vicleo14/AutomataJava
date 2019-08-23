@@ -1,9 +1,9 @@
-/*
-@author: Lara Cazares Jaime Arturo
-@author: Morales Flores Victor Leonel
-*/
-
 package com.escom.automata;
-public interface IAutomata
-{
+
+
+public interface IAutomata {
+    public void positiveClosure();
+    public void kleenClosure();
+    public Boolean analizeString(String string);
+    
 }
