@@ -8,6 +8,7 @@ public class Afn implements IAfn{
     private Collection<State> acceptedStates;
     private Collection<State> states;
     private IState currentState;
+    private IState initialState;
     private Alphabet alphabet;
     
     private void init()
@@ -45,7 +46,11 @@ public class Afn implements IAfn{
 
     @Override
     public void addAFN(IAfn automata) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Afn afn=(Afn)automata;
+        State newInitialState = new State(false);
+        this.setInitialState(newInitialState);
+        //this.setStates(afn.getStates());
+        
     }
 
     @Override
@@ -95,4 +100,11 @@ public class Afn implements IAfn{
         this.alphabet = alphabet;
     }
     
+    public IState getInitialState() {
+        return initialState;
+    }
+
+    public void setInitialState(IState initialState) {
+        this.initialState = initialState;
+    }
 }
