@@ -1,6 +1,7 @@
 package com.escom.automata;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 /*
 @author: Lara Cazares Jaime Arturo
@@ -11,7 +12,42 @@ public class Transition
 {
   private Character initialSymbol,lastSymbol;
   private Collection<Integer> nextStates;
-
+  public void init()
+  {
+      nextStates=new HashSet<>();
+      
+  }
+  public Transition(Character c,Collection<Integer> nextStates)
+  {
+      init();
+      if(nextStates!=null)
+          this.nextStates=nextStates;
+      initialSymbol=c;
+      lastSymbol=c;
+      
+  }
+  public Transition(Character c,Integer nextState)
+  {
+      init();
+      initialSymbol=c;
+      lastSymbol=c;
+      nextStates.add(nextState);
+  }
+  public Transition(Character initialSymbol,Character lastSymbol,Collection<Integer> nextStates)
+  {
+      init();
+      this.initialSymbol=initialSymbol;
+      this.lastSymbol=lastSymbol;
+      if(nextStates!=null)
+          this.nextStates=nextStates;
+  }
+  public Transition(Character initialSymbol,Character lastSymbol,Integer nextState)
+  {
+      init();
+      this.initialSymbol=initialSymbol;
+      this.lastSymbol=lastSymbol;
+      nextStates.add(nextState);
+  }
   /*GETTERS*/
   public Character getInitialSymbol()
   {
@@ -37,6 +73,14 @@ public class Transition
   public void setNextStates(Integer nextState)
   {
     this.nextStates.add(nextState);
+  }
+  @Override
+  public String toString()
+  {
+      String s=(initialSymbol==lastSymbol)?initialSymbol.toString():initialSymbol.toString()+":"+lastSymbol.toString();
+      System.out.println("CLASS TRANSITION: "+s);
+      
+      return s;
   }
   
   
