@@ -62,5 +62,37 @@ public class Afn implements IAfn{
     public Boolean analizeString(String string) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    public Collection<State> getAcceptedStates() {
+        return acceptedStates;
+    }
+
+    public void setAcceptedStates(Collection<State> acceptedStates) {
+        this.acceptedStates = acceptedStates;
+    }
+
+    public Collection<State> getStates() {
+        return states;
+    }
+
+    public void setStates(Collection<State> states) {
+        this.states = states;
+    }
+
+    public IState getCurrentState() {
+        return currentState;
+    }
+
+    public void setCurrentState(IState currentState) {
+        this.currentState = currentState;
+    }
+
+    public Alphabet getAlphabet() {
+        return alphabet;
+    }
+
+    public void setAlphabet(Alphabet alphabet) {
+        this.alphabet = alphabet;
+    }
     
 }
