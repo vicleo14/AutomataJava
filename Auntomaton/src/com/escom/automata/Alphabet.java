@@ -15,6 +15,11 @@ public class Alphabet
   {
     symbols=new HashSet<>();
   }
+  public Boolean addAlphabet(Alphabet alphabet2)
+  {
+      Collection symbols2=alphabet2.getSymbols();
+      return this.symbols.addAll(symbols2);
+  }
   public Alphabet(Character initialSymbol,Character lastSymbol)
   {
       symbols=new HashSet<>();
@@ -48,4 +53,13 @@ public class Alphabet
   {
     return symbols.toString();
   }
+
+    public Collection<Character> getSymbols() {
+        return symbols;
+    }
+
+    public void setSymbols(Collection<Character> symbols) {
+        this.symbols = symbols;
+    }
+  
 }

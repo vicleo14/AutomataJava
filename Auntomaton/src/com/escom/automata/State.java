@@ -3,38 +3,36 @@ package com.escom.automata;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Objects;
-
-
 public class State implements IState {
-  static Integer counter;
+  static Integer counter=0;
   private Integer id;
   private Collection<Transition> transitions;
   private Boolean finalState;
-  
-  public State(Boolean finalState)
-  {
-      id=counter++;
-      System.out.println(id);
-      transitions=new HashSet<>();
-      this.finalState=finalState;
-  }
-  @Override
-  public Boolean isFinal()
-  {
+    public State(Boolean finalState)
+    {
+        id=counter++;
+        transitions=new HashSet<>();
+        this.finalState=finalState;
+    }
+    @Override
+    public Boolean isFinal()
+    {
         return finalState;
-  }
-  
-  public Boolean addTransition(Character c,Integer nextState)
-  {
-      return true;
-  }
-  
-  public Boolean addTransition(Transition t)
-  {
-      return transitions.add(t);
-  }
-
+    }
+    public Boolean addTransition(Character c,Integer nextState)
+    {
+        return true;
+    }
+    public Boolean addTransition(Transition t)
+    {
+        return transitions.add(t);
+    }
+    public Boolean addTransitions(Collection t)
+    {
+        return transitions.addAll(t);
+    }
     @Override
     public Collection<IState> epsilonClosure(Collection<IState> states) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -97,7 +95,14 @@ public class State implements IState {
         }
         return true;
     }
-
-    
-    
+    @Override
+    public String toString()
+    {
+        String info="State "+id+":\n";
+        Iterator<Transition> it=transitions.iterator();
+        while(it.hasNext())
+            info+=it.next().toString()+"\n";
+        info+="Final state:"+finalState+"\n";
+        return info;
+    }
 }

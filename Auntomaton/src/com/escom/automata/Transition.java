@@ -2,6 +2,7 @@ package com.escom.automata;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 
 /*
 @author: Lara Cazares Jaime Arturo
@@ -48,6 +49,18 @@ public class Transition
       this.lastSymbol=lastSymbol;
       nextStates.add(nextState);
   }
+  public Boolean addNextState(Integer i)
+  {
+    return nextStates.add(i);
+  }
+  public Boolean removeState(Integer i)
+  {
+      return nextStates.remove(i);
+  }
+  public void joinTransition(Transition t2)
+  {
+      nextStates.addAll(t2.getNextStates());
+  }
   /*GETTERS*/
   public Character getInitialSymbol()
   {
@@ -78,10 +91,44 @@ public class Transition
   public String toString()
   {
       String s=(initialSymbol==lastSymbol)?initialSymbol.toString():initialSymbol.toString()+":"+lastSymbol.toString();
-      System.out.println("CLASS TRANSITION: "+s);
+      s+="=[";
+      for(Integer i:nextStates)
+      {
+          s+=i+",";
+      }
       
-      return s;
+      return s+"]";
   }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 41 * hash + Objects.hashCode(this.initialSymbol);
+        hash = 41 * hash + Objects.hashCode(this.lastSymbol);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Transition other = (Transition) obj;
+        if (!Objects.equals(this.initialSymbol, other.initialSymbol)) {
+            return false;
+        }
+        if (!Objects.equals(this.lastSymbol, other.lastSymbol)) {
+            return false;
+        }
+        return true;
+    }
+  
   
   
 }

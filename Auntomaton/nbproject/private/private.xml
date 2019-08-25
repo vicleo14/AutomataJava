@@ -5,8 +5,8 @@
         <group>
             <file>file:/D:/SeptimoSemestre/Compiladores/Practicas/Automatons/Auntomaton/src/com/escom/automata/Afn.java</file>
             <file>file:/D:/SeptimoSemestre/Compiladores/Practicas/Automatons/Auntomaton/src/com/escom/automata/State.java</file>
-            <file>file:/D:/SeptimoSemestre/Compiladores/Practicas/Automatons/Auntomaton/src/com/escom/automata/IAfn.java</file>
             <file>file:/D:/SeptimoSemestre/Compiladores/Practicas/Automatons/Auntomaton/src/com/escom/automata/Transition.java</file>
+            <file>file:/D:/SeptimoSemestre/Compiladores/Practicas/Automatons/Auntomaton/test/com/escom/automata/test/transition/TransitionTest.java</file>
         </group>
     </open-files>
 </project-private>
