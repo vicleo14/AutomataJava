@@ -128,7 +128,10 @@ public class Transition
         }
         return true;
     }
-  
-  
+    
+    public Boolean split(Transition t)
+    {
+        return nextStates.addAll(t.getNextStates());
+    }
   
 }

@@ -1,6 +1,7 @@
 
 package com.escom.automata;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -13,7 +14,7 @@ public class State implements IState {
     public State(Boolean finalState)
     {
         id=counter++;
-        transitions=new HashSet<>();
+        transitions=new ArrayList<>();
         this.finalState=finalState;
     }
     @Override
@@ -27,7 +28,17 @@ public class State implements IState {
     }
     public Boolean addTransition(Transition t)
     {
-        return transitions.add(t);
+        if(!transitions.contains(t))
+            return transitions.add(t);
+        else
+        {
+            for(Transition itT:transitions)
+            {
+                if(itT.equals(t))
+                    return itT.split(t);
+            }
+        }
+        return false;
     }
     public Boolean addTransitions(Collection t)
     {
@@ -40,7 +51,7 @@ public class State implements IState {
 
     @Override
     public Collection<Transition> getTransitions() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return transitions;
     }
 
     public Integer getId() {

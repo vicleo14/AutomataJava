@@ -2,6 +2,7 @@
 package com.escom.automata;
 
 import com.escom.automata.util.Constants;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -15,7 +16,7 @@ public class Afn implements IAfn{
     private void init()
     {
         acceptedStates=new HashSet<>();
-        states=new HashSet<>();
+        states=new ArrayList<>();
         //currentState=new State(false);
         alphabet=new Alphabet();
     }
@@ -46,9 +47,39 @@ public class Afn implements IAfn{
 
     @Override
     public void concatenateAFN(IAfn automata) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        /*
+        * Cerradura positiva
+        * 1.- Unimos los alfabetos de los 2 automatas
+        * 2.- Elegimos el estado final de este automata en caso de que haya mas de uno
+        * 3.- Quitamos el caracter de estado fina al ese estado del paso 2
+        * 4.- Agregamos transiion al estado final elegido opiando las transiiones del estado iniial del automata reibido
+        * 5.- Eliminamos estado iniial del automata reibido
+        * 6.- Anadimos estados del automata 2
+        * 7.- Anadimos estados finales del automata 
+        * 8.-                                                                            
+        */
+        Integer selected;  
+        State finalState1;
+        Afn af=(Afn)automata;
+        this.getAlphabet().addAlphabet(af.getAlphabet());
+        if(this.acceptedStates.size()>1)
+        {
+            selected=selectFinalState();
+            finalState1=null;
+        }
+        else
+            finalState1=acceptedStates.iterator().next();
+        finalState1.setFinalState(false);
+        acceptedStates.remove(finalState1);
+        finalState1.addTransitions(af.getCurrentState().getTransitions());
+        af.getStates().remove(af.currentState);
+        this.states.addAll(af.getStates());
+        acceptedStates.addAll(af.getAcceptedStates());
     }
-
+    public Integer selectFinalState()
+    {
+        return -1;
+    }
     @Override
     public void addAFN(IAfn automata) {
         /*
@@ -56,23 +87,27 @@ public class Afn implements IAfn{
         * 1.- Unimos los alfabetos de los 2 automatas
         * 2.- Creamos un nuevo estado inicial
         * 3.- Creamons un nuevo estado final
-        * 4.- Creamos transiciones epsilon del estado inicial o los estados iniciales anteriores
-        * 5.- 
+        * 4.- Creamos transiciones epsilon del estado inicial a los estados iniciales anteriores
+        * 5.- Creamos transiciones epsilon de los estados finales anteriores al nuevo estado final
         */
         Afn af=(Afn)automata;
         this.alphabet.addAlphabet(af.getAlphabet());
         State newIniState=new State(false);
         State newFinalState=new State(true);
+        states.add(newIniState);
+        states.add(newFinalState);
         State s=(State)currentState;
         
         State s2=(State)af.currentState;
+        Collection<State> states2=af.getStates();
+        states.addAll(states2);
         Transition t1=new Transition(Constants.EPSILON,s.getId());
         Transition t2=new Transition(Constants.EPSILON,s2.getId());
         newIniState.addTransition(t1);
         newIniState.addTransition(t2);
         currentState=newIniState;
         Iterator<State> its1=acceptedStates.iterator();
-        Iterator<State> its2=acceptedStates.iterator();
+        Iterator<State> its2=af.getAcceptedStates().iterator();
         while(its1.hasNext())
         {
             State ss=its1.next();
@@ -85,11 +120,20 @@ public class Afn implements IAfn{
             ss.addTransition(new Transition(Constants.EPSILON,newFinalState.getId()));
             ss.setFinalState(false);
         }
+        acceptedStates.clear();
+        acceptedStates.add(newFinalState);
     }
 
     @Override
     public void positiveClosure() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        /*
+        * Cerradura positiva
+        * 1.- Unimos los alfabetos de los 2 automatas
+        * 2.- Creamos un nuevo estado inicial
+        * 3.- Creamons un nuevo estado final
+        * 4.- Creamos transiciones epsilon del estado inicial a los estados iniciales anteriores
+        * 5.- Creamos transiciones epsilon de los estados finales anteriores al nuevo estado final
+        */
     }
 
     @Override
@@ -138,18 +182,20 @@ public class Afn implements IAfn{
     {
         String info="AUTOMATA::\n";
         info+="--ALPHABET--\n";
-        info+=alphabet.toString()+"\n";
+        info+=alphabet.getAlphabet()+"\n";
         info+="--STATES--\n";
         Iterator<State> statesIt=this.states.iterator();
         while(statesIt.hasNext())
         {
             info+=statesIt.next().toString();
         }
+        info+="--CURRENT STATE--\n";
+        info+=currentState.toString()+"\n";
         info+="--FINAL STATES--\n";
         Iterator<State> acc=this.acceptedStates.iterator();
         while(acc.hasNext())
         {
-            info+=statesIt.next().getId()+",";
+            info+=acc.next().getId()+",";
         }
         return info;
     }
