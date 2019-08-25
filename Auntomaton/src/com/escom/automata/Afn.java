@@ -55,8 +55,7 @@ public class Afn implements IAfn{
         * 4.- Agregamos transiion al estado final elegido opiando las transiiones del estado iniial del automata reibido
         * 5.- Eliminamos estado iniial del automata reibido
         * 6.- Anadimos estados del automata 2
-        * 7.- Anadimos estados finales del automata 
-        * 8.-                                                                            
+        * 7.- Anadimos estados finales del automata                                         
         */
         Integer selected;  
         State finalState1;
@@ -106,33 +105,31 @@ public class Afn implements IAfn{
         newIniState.addTransition(t1);
         newIniState.addTransition(t2);
         currentState=newIniState;
-        Iterator<State> its1=acceptedStates.iterator();
-        Iterator<State> its2=af.getAcceptedStates().iterator();
+        addAcceptedState(this,newFinalState);
+        addAcceptedState(af,newFinalState);
+        
+        acceptedStates.clear();
+        acceptedStates.add(newFinalState);
+    }
+    public void addAcceptedState(Afn afn,State newFinalState)
+    {
+        Iterator<State> its1=afn.getAcceptedStates().iterator();
         while(its1.hasNext())
         {
             State ss=its1.next();
             ss.addTransition(new Transition(Constants.EPSILON,newFinalState.getId()));
             ss.setFinalState(false);
         }
-        while(its2.hasNext())
-        {
-            State ss=its2.next();
-            ss.addTransition(new Transition(Constants.EPSILON,newFinalState.getId()));
-            ss.setFinalState(false);
-        }
-        acceptedStates.clear();
-        acceptedStates.add(newFinalState);
     }
 
     @Override
     public void positiveClosure() {
         /*
         * Cerradura positiva
-        * 1.- Unimos los alfabetos de los 2 automatas
-        * 2.- Creamos un nuevo estado inicial
-        * 3.- Creamons un nuevo estado final
-        * 4.- Creamos transiciones epsilon del estado inicial a los estados iniciales anteriores
-        * 5.- Creamos transiciones epsilon de los estados finales anteriores al nuevo estado final
+        * 1.- Creamos un nuevo estado inicial
+        * 2.- Creamons un nuevo estado final
+        * 3.- Creamos transiciones epsilon del nuevo estado inicial al estado inicial anteriorcccccfgccccccccccccccccccccccccccccccccccccccccccccc 
+        * 4.- Creamos transiciones epsilon de los estados finales anteriores al nuevo estado final
         */
     }
 
