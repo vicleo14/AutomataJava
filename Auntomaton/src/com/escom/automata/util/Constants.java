@@ -1,5 +1,5 @@
 package com.escom.automata.util;
 
 public class Constants {
-    public static final Integer EPSILON=156;
+    public static final Character EPSILON=156;
 }
