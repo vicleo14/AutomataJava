@@ -4,8 +4,10 @@ package com.escom.automata;
 import com.escom.automata.util.Constants;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Stack;
 
 public class Afn implements IAfn{
     private Collection<State> acceptedStates;
@@ -179,7 +181,17 @@ public class Afn implements IAfn{
 
     @Override
     public Boolean analizeString(String string) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Collection<IState> states;
+        states=(Collection<IState>) (epsilonClausure(initialState));
+        for(char symbol : string.toCharArray()){
+            states=goTo(states, new Character(symbol));
+        }
+        for(IState state : states){
+            if(state.isFinal()){
+                return true;
+            }
+        }
+        return false;
     }
 
     public Collection<State> getAcceptedStates() {
@@ -243,5 +255,110 @@ public class Afn implements IAfn{
 
     public void setInitialState(IState initialState) {
         this.initialState = initialState;
+    }
+    
+    public Collection<IState> epsilonClausure(Collection<IState> states){
+        Collection<IState> c;
+        c=new HashSet<>();
+        for(IState state : states){
+            c.addAll(epsilonClausure(state));
+        }
+        return c;
+    }
+    
+    public Collection<IState> epsilonClausure(IState state){
+        Stack<IState> stack= new Stack<IState>();
+        stack.push(state);
+        IState e=null;
+        Collection<IState> c;
+        c=new HashSet<>();
+        while(!stack.empty()){
+            e=stack.pop();
+            c.add(e);
+            for(IState epsilonState: getStatesByIds(e.epsilonClosure())){
+                if(!c.contains(epsilonState)){
+                    c.add(epsilonState);
+                    stack.add(epsilonState);
+                }
+            }
+        }    
+        return c;
+    }
+    
+    public IState getStateById(int id){
+        for(State state: states){
+            if(state.getId()==id){
+                return state;
+            }
+        }
+        return null;
+    }
+    
+    public Collection<IState> getStatesByIds(Collection<Integer> ids){
+        Collection<IState> states;
+        states=new HashSet<>();
+        for(Integer id:ids){
+            states.add(getStateById(id));
+        }
+        return states;
+    }
+    
+    public Collection<IState> move(Collection<IState> states, Character symbol){
+        Collection<IState> moveStates;
+        moveStates=new HashSet<>();
+        for(IState state: states){
+            moveStates.addAll(move(state,symbol));
+        }
+        return moveStates;
+    }
+    
+    public Collection<IState> move(IState state, Character symbol){
+        Collection<IState> moveStates;
+        moveStates=new HashSet<>();
+        int lowerLimit, highLimit, symbolInt=(int)symbol.charValue();
+        Collection<Transition> transitions = state.getTransitions();
+        for(Transition transition: transitions){
+            lowerLimit=(int)transition.getInitialSymbol().charValue();
+            highLimit=(int)transition.getLastSymbol().charValue();
+            //System.out.println("LowerLimit="+lowerLimit);
+            //System.out.println("HighLimit="+highLimit);
+            if(lowerLimit>=symbolInt && highLimit<=symbolInt){
+                for(Integer id: transition.getNextStates()){
+                    moveStates.add(getStateById(id));
+                }
+            }
+        }
+        return moveStates;
+    }
+    
+    public Collection<IState> goTo(Collection<IState> states, Character symbol){
+        return epsilonClausure(move(states, symbol));
+    }
+    
+    public Collection<IState> goTo(State state, Character symbol){
+        return epsilonClausure(move(state, symbol));
+    }
+    
+    public Collection<SetState> generateSetStates(){
+        Collection<SetState> s= new HashSet<SetState>();
+        SetState setState, setState2 = null;
+        Stack<SetState> stack = new Stack<SetState>();
+        stack.add(new SetState(epsilonClausure(initialState), true, false, false,0));
+        while(!stack.empty()){
+            setState=stack.pop();
+            for(Character symbol: alphabet.getSymbols()){
+                setState2 = new SetState(goTo(setState.getStates(), symbol));
+                setState2.setId(setState.getId());
+                if(!setState.equals(setState2)){
+                    stack.push(setState2);
+                    setState.addTransition(new Transition(symbol, new Integer(setState2.getId())));
+                }else{
+                    setState.addTransition(new Transition(symbol, new Integer(setState.getId())));
+                }
+            }
+            setState.setAnalyzed(true);
+            s.add(setState);
+        }
+        return s;
     }
 }

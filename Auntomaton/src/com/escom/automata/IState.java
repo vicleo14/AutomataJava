@@ -10,7 +10,7 @@ import java.util.Collection;
 public interface IState
 {
   public Boolean isFinal();
-  public Collection<IState> epsilonClosure(Collection<IState> states);
+  public Collection<Integer> epsilonClosure();
   public Boolean addTransition(Transition t);
   public Collection<Transition> getTransitions();
 }
