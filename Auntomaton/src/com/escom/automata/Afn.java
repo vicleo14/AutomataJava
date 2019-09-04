@@ -11,6 +11,7 @@ public class Afn implements IAfn{
     private Collection<State> acceptedStates;
     private Collection<State> states;
     private IState currentState;
+    private IState initialState;
     private Alphabet alphabet;
     
     private void init()
@@ -198,4 +199,11 @@ public class Afn implements IAfn{
     }
     
     
+    public IState getInitialState() {
+        return initialState;
+    }
+
+    public void setInitialState(IState initialState) {
+        this.initialState = initialState;
+    }
 }
