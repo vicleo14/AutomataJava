@@ -1,11 +1,13 @@
 
 package com.escom.automata;
 
+import com.escom.automata.util.Constants;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.Stack;
 public class State implements IState {
   static Integer counter=0;
   private Integer id;
@@ -45,8 +47,16 @@ public class State implements IState {
         return transitions.addAll(t);
     }
     @Override
-    public Collection<IState> epsilonClosure(Collection<IState> states) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Collection<Integer> epsilonClosure() {
+        Collection<Integer> c=null;
+        c=new HashSet<>();
+        Collection<Transition> transitions = this.getTransitions();
+        for(Transition transition: transitions){
+            if(transition.getInitialSymbol() == Constants.EPSILON.charValue()){
+                c.addAll(transition.getNextStates());
+            }
+        }
+        return c;
     }
 
     @Override
