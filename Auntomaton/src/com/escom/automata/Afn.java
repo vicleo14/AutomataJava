@@ -94,7 +94,6 @@ public class Afn implements IAfn{
     }
     @Override
     public void addAFN(IAfn automata) {
-
         /*
         * Unir un automata con el actual por Thompson
         * 1.- Unimos los alfabetos de los 2 automatas
@@ -140,6 +139,7 @@ public class Afn implements IAfn{
         *Un AFnD puede tener más de un estado de aceptación, por lo tanto si es general me parece que 
         *quitarle los estados de aceptación, pero si es un automata de Thompson es correcto
         */
+
     }
 
     @Override
@@ -148,6 +148,7 @@ public class Afn implements IAfn{
         * Cerradura positiva
         * 1.- Creamos un nuevo estado inicial
         * 2.- Creamons un nuevo estado final
+<<<<<<< HEAD
         * 3.- Creamos transiciones epsilon del nuevo estado inicial al estado inicial anterior
         * 4.- Creamos transiciones epsilon de los estados finales anteriores al nuevo estado final
         */
@@ -164,6 +165,7 @@ public class Afn implements IAfn{
         addAcceptedState(this, newFinalState);
         states.add(newInitialState);
         states.add(newFinalState);
+
     }
 
     @Override
