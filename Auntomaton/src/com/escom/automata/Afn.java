@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Stack;
 
 public class Afn implements IAfn{
@@ -15,9 +16,28 @@ public class Afn implements IAfn{
     private IState currentState;
     private IState initialState;
     private Alphabet alphabet;
+    static Integer counterAfn=0;
+    private Integer idAfn;
+
+    public static Integer getCounterAfn() {
+        return counterAfn;
+    }
+
+    public static void setCounterAfn(Integer counterAfn) {
+        Afn.counterAfn = counterAfn;
+    }
+
+    public Integer getIdAfn() {
+        return idAfn;
+    }
+
+    public void setIdAfn(Integer idAfn) {
+        this.idAfn = idAfn;
+    }
     
     private void init()
     {
+        idAfn=counterAfn++;
         acceptedStates=new HashSet<>();
         states=new ArrayList<>();
         //currentState=new State(false);
@@ -363,4 +383,30 @@ public class Afn implements IAfn{
         }
         return s;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 29 * hash + Objects.hashCode(this.idAfn);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Afn other = (Afn) obj;
+        if (!Objects.equals(this.idAfn, other.idAfn)) {
+            return false;
+        }
+        return true;
+    }
+    
 }
