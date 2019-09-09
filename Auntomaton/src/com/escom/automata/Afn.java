@@ -27,6 +27,21 @@ public class Afn implements IAfn{
         Afn.counterAfn = counterAfn;
     }
 
+    public Afn(char c, char c0) {
+        init();
+        alphabet.addElement(c);
+        alphabet.addElement(c0);
+        State state1=new State(false);
+        State state2=new State(true);
+        Transition t=new Transition(c,c0,state2.getId());
+        state1.addTransition(t);
+        currentState=state1;
+        states.add(state1);
+        states.add(state2);
+        acceptedStates.add(state2);
+        initialState=state1;
+    }
+
     public Integer getIdAfn() {
         return idAfn;
     }
