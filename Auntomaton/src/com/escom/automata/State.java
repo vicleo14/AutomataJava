@@ -50,9 +50,11 @@ public class State implements IState {
     public Collection<Integer> epsilonClosure() {
         Collection<Integer> c=null;
         c=new HashSet<>();
+        c.add(this.getId());
         Collection<Transition> transitions = this.getTransitions();
         for(Transition transition: transitions){
             if(transition.getInitialSymbol() == Constants.EPSILON.charValue()){
+                //System.out.println(transition.getNextStates());
                 c.addAll(transition.getNextStates());
             }
         }

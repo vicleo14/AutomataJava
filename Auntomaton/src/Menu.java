@@ -1,6 +1,7 @@
 
 import com.escom.automata.Afd;
 import com.escom.automata.Afn;
+import com.escom.automata.SetState;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -88,7 +89,12 @@ public class Menu {
                 case 7:
                     System.out.println("**Escoge un AFN para convertirlo**");
                     afn1=selectAutomata();
+                    System.out.println("SetStates:");
+                    for(SetState s: afn1.generateSetStates()){
+                        System.out.println(s.toString());
+                    }
                     afd = new Afd(afn1.generateSetStates(), afn1.getAlphabet());
+                    afd.printTable();
                     break;
                 case 8:
                     System.out.println("**Analiza una cadena**");

@@ -14,7 +14,6 @@ public class Afn implements IAfn{
     private Collection<State> acceptedStates;
     private Collection<State> states;
     private IState currentState;
-    private IState initialState;
     private Alphabet alphabet;
     static Integer counterAfn=0;
     private Integer idAfn;
@@ -61,19 +60,19 @@ public class Afn implements IAfn{
         states.add(state1);
         states.add(state2);
         acceptedStates.add(state2);
-        initialState=state1;
+        currentState=state1;
     }
 
     @Override
     public void optional() {
         State newInitialState = new State(false);
         State newFinalState = new State(true);
-        Transition transition = new Transition(Constants.EPSILON, ((State)initialState).getId());
+        Transition transition = new Transition(Constants.EPSILON, ((State)currentState).getId());
         newInitialState.addTransition(transition);
         this.setInitialState(newInitialState);
         addAcceptedState(this, newFinalState);
         transition = new Transition(Constants.EPSILON, newFinalState.getId());
-        initialState.addTransition(transition);
+        currentState.addTransition(transition);
         states.add(newInitialState);
         states.add(newFinalState);
     }
@@ -174,7 +173,7 @@ public class Afn implements IAfn{
         */
         State newInitialState = new State(false);
         State newFinalState = new State(true);
-        State actualInitialState=(State)initialState;
+        State actualInitialState=(State)currentState;
         Transition transition = new Transition(Constants.EPSILON, actualInitialState.getId());
         newInitialState.addTransition(transition);
         for (State actualFinalState : acceptedStates) {
@@ -197,14 +196,14 @@ public class Afn implements IAfn{
             Iterator<State> iterator=this.getAcceptedStates().iterator();
             State actualAcceptedState=iterator.next();
             Transition transition = new Transition(Constants.EPSILON, actualAcceptedState.getId());
-            initialState.addTransition(transition);
+            currentState.addTransition(transition);
        }
     }
 
     @Override
     public Boolean analizeString(String string) {
         Collection<IState> states;
-        states=(Collection<IState>) (epsilonClausure(initialState));
+        states=(Collection<IState>) (epsilonClausure(currentState));
         for(char symbol : string.toCharArray()){
             states=goTo(states, new Character(symbol));
         }
@@ -272,11 +271,11 @@ public class Afn implements IAfn{
     
     
     public IState getInitialState() {
-        return initialState;
+        return currentState;
     }
 
-    public void setInitialState(IState initialState) {
-        this.initialState = initialState;
+    public void setInitialState(IState currentState) {
+        this.currentState = currentState;
     }
     
     public Collection<IState> epsilonClausure(Collection<IState> states){
@@ -297,12 +296,26 @@ public class Afn implements IAfn{
         while(!stack.empty()){
             e=stack.pop();
             c.add(e);
-            for(IState epsilonState: getStatesByIds(e.epsilonClosure())){
-                if(!c.contains(epsilonState)){
-                    c.add(epsilonState);
-                    stack.add(epsilonState);
+            //try{
+            
+                for(IState epsilonState: getStatesByIds(e.epsilonClosure())){
+                    System.out.println(epsilonState);
+                    if(!c.contains(epsilonState)){
+                        System.out.println("mm");
+                        c.add(epsilonState);
+                        stack.push(epsilonState);
+                    }
+                    
                 }
-            }
+            //} catch(Exception eee){
+                
+                //System.out.println("Ya valioooooooooooooooooooooooooooooooooooooooooooooooooooooooooo\n\n\n");
+                
+                /*for(IState epsilonState: getStatesByIds(e.epsilonClosure())){
+                    System.out.println("buuuuuuuu");
+                //System.out.println("Clausura epsilon:" + epsilonState.toString());    
+                } */      
+            //}
         }    
         return c;
     }
@@ -317,6 +330,7 @@ public class Afn implements IAfn{
     }
     
     public Collection<IState> getStatesByIds(Collection<Integer> ids){
+        //1System.out.println("Aqui ");
         Collection<IState> states;
         states=new HashSet<>();
         for(Integer id:ids){
@@ -365,7 +379,7 @@ public class Afn implements IAfn{
         Collection<SetState> s= new HashSet<SetState>();
         SetState setState, setState2 = null;
         Stack<SetState> stack = new Stack<SetState>();
-        stack.add(new SetState(epsilonClausure(initialState), true, false, false,0));
+        stack.add(new SetState(epsilonClausure(currentState), true, false, false,0));
         while(!stack.empty()){
             setState=stack.pop();
             for(Character symbol: alphabet.getSymbols()){
