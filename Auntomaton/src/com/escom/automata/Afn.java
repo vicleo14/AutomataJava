@@ -302,35 +302,29 @@ public class Afn implements IAfn{
     }
     
     public Collection<IState> epsilonClausure(IState state){
+        //System.out.println("Entra a letodo epsilon");
         Stack<IState> stack= new Stack<IState>();
         stack.push(state);
         IState e=null;
         Collection<IState> c;
         c=new HashSet<>();
-        while(!stack.empty()){
-            e=stack.pop();
-            c.add(e);
-            //try{
-            
-                for(IState epsilonState: getStatesByIds(e.epsilonClosure())){
-                    System.out.println(epsilonState);
-                    if(!c.contains(epsilonState)){
-                        System.out.println("mm");
-                        c.add(epsilonState);
-                        stack.push(epsilonState);
-                    }
-                    
+        while(!stack.isEmpty())
+        {
+            IState s=stack.pop();
+            if(!c.contains(s))
+            {
+                for(IState sp:getStatesByIds(s.epsilonClosure()))
+                {
+                    stack.add(sp);
                 }
-            //} catch(Exception eee){
-                
-                //System.out.println("Ya valioooooooooooooooooooooooooooooooooooooooooooooooooooooooooo\n\n\n");
-                
-                /*for(IState epsilonState: getStatesByIds(e.epsilonClosure())){
-                    System.out.println("buuuuuuuu");
-                //System.out.println("Clausura epsilon:" + epsilonState.toString());    
-                } */      
-            //}
-        }    
+                c.add(s);
+            }
+            else
+            {
+                continue;
+            }
+        }
+        //System.out.println("Termina");
         return c;
     }
     
@@ -382,6 +376,7 @@ public class Afn implements IAfn{
     }
     
     public Collection<IState> goTo(Collection<IState> states, Character symbol){
+        
         return epsilonClausure(move(states, symbol));
     }
     
@@ -393,9 +388,10 @@ public class Afn implements IAfn{
         Collection<SetState> s= new HashSet<SetState>();
         SetState setState, setState2 = null;
         Stack<SetState> stack = new Stack<SetState>();
-        stack.add(new SetState(epsilonClausure(currentState), true, false, false,0));
+        stack.push(new SetState(epsilonClausure(currentState), true, false, false,0));
         while(!stack.empty()){
             setState=stack.pop();
+            
             for(Character symbol: alphabet.getSymbols()){
                 setState2 = new SetState(goTo(setState.getStates(), symbol));
                 setState2.setId(setState.getId());

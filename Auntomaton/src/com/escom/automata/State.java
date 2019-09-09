@@ -103,6 +103,7 @@ public class State implements IState {
 
     @Override
     public boolean equals(Object obj) {
+        
         if (this == obj) {
             return true;
         }
@@ -113,6 +114,8 @@ public class State implements IState {
             return false;
         }
         final State other = (State) obj;
+        //System.out.println("Este estado:"+this.getId());
+        //System.out.println("Otro estado:"+other.getId());
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }

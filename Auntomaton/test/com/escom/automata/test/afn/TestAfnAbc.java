@@ -7,6 +7,7 @@ package com.escom.automata.test.afn;
 
 import com.escom.automata.Afd;
 import com.escom.automata.Afn;
+import com.escom.automata.SetState;
 
 /**
  *
@@ -28,11 +29,17 @@ public class TestAfnAbc {
         af11.concatenateAFN(af13);
         
         //System.out.println(af11.toString());
-        System.out.println("8:"+af11.getStateById(8).epsilonClosure());
+        /*System.out.println("8:"+af11.getStateById(8).epsilonClosure());
         System.out.println("6:"+af11.getStateById(6).epsilonClosure());
         System.out.println("Currente state:"+af11.getCurrentState().epsilonClosure());
+        System.out.println("Solicitado:"+af11.epsilonClausure(af11.getCurrentState()));
+        System.out.println("------------------------------------------------------");
+        System.out.println("Solicitado3:\n"+af11.epsilonClausure(af11.getStateById(1)));
+        */
+        System.out.println("Mover 0:"+af11.goTo(af11.getStateById(8), 'a'));
+        System.out.println("SetStates:");
         Afd afd=new Afd(af11.generateSetStates(),af11.getAlphabet());
-        //afd.printTable();
+        afd.printTable();
         
     }
     

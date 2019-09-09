@@ -13,4 +13,5 @@ public interface IState
   public Collection<Integer> epsilonClosure();
   public Boolean addTransition(Transition t);
   public Collection<Transition> getTransitions();
+  public Integer getId();
 }

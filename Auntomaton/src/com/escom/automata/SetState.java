@@ -101,10 +101,49 @@ public class SetState {
     public void setAnalyzed(boolean analyzed) {
         this.analyzed = analyzed;
     }
-   
-    public boolean equals(SetState s) {
-        return states.containsAll(s.getStates());
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 67 * hash + Objects.hashCode(this.states);
+        hash = 67 * hash + this.id;
+        hash = 67 * hash + (this.initial ? 1 : 0);
+        hash = 67 * hash + (this.accepted ? 1 : 0);
+        hash = 67 * hash + Objects.hashCode(this.transitions);
+        return hash;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final SetState other = (SetState) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        if (this.initial != other.initial) {
+            return false;
+        }
+        if (this.accepted != other.accepted) {
+            return false;
+        }
+        if (!Objects.equals(this.states, other.states)) {
+            return false;
+        }
+        if (!Objects.equals(this.transitions, other.transitions)) {
+            return false;
+        }
+        return true;
+    }
+   
+    
     @Override
     public String toString()
     {

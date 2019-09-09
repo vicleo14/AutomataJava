@@ -78,5 +78,6 @@ public class AfnTestTeacher {
         System.out.println(f11.toString());
         
         Afd afd=new Afd(f11.generateSetStates(),f11.getAlphabet());
+        afd.printTable();
     }
 }
