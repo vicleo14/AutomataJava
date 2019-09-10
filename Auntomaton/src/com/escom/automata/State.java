@@ -131,4 +131,13 @@ public class State implements IState {
         info+="Final state:"+finalState+"\n";
         return info;
     }
+    
+    public int hastransition(char c){
+        for(Transition t : transitions){
+            if(t.getInitialSymbol()==c){               
+                return t.getNextStates().iterator().next();
+            }
+        }
+        return -1;
+    }
 }
