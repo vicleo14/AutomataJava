@@ -3,7 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/D:/SeptimoSemestre/Compiladores/Practicas/Automatons/Auntomaton/src/com/escom/automata/Afn.java</file>
+            <file>file:/D:/SeptimoSemestre/Compiladores/Practicas/Automatons/Auntomaton/test/com/escom/automata/test/afn/AfnTestTeacher.java</file>
+            <file>file:/D:/SeptimoSemestre/Compiladores/Practicas/Automatons/Auntomaton/src/com/escom/automata/State.java</file>
+            <file>file:/D:/SeptimoSemestre/Compiladores/Practicas/Automatons/Auntomaton/test/com/escom/automata/test/afn/TestAfnAbc.java</file>
             <file>file:/D:/SeptimoSemestre/Compiladores/Practicas/Automatons/Auntomaton/test/com/escom/automata/test/afn/AfnTest.java</file>
+            <file>file:/D:/SeptimoSemestre/Compiladores/Practicas/Automatons/Auntomaton/src/com/escom/automata/SetState.java</file>
         </group>
     </open-files>
 </project-private>
