@@ -32,9 +32,9 @@ public class AfnTestTeacher {
         /*GEENRAMOS f2-QUEDA EN f21*/
         Afn f21=new Afn('+');
         Afn f22=new Afn('-');
-        Afn f23=new Afn('0','9');
+        //Afn f23=new Afn('0','9');
         Afn f24=new Afn('.');
-        Afn f25=new Afn('0','9');
+        //Afn f25=new Afn('0','9');
         
         f21.addAFN(f22);
         f21.optional();

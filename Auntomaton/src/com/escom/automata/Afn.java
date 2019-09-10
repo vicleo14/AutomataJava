@@ -376,7 +376,6 @@ public class Afn implements IAfn{
     }
     
     public Collection<IState> goTo(Collection<IState> states, Character symbol){
-        
         return epsilonClausure(move(states, symbol));
     }
     
@@ -391,7 +390,7 @@ public class Afn implements IAfn{
         stack.push(new SetState(epsilonClausure(currentState), true, false, false,0));
         while(!stack.empty()){
             setState=stack.pop();
-            
+            //System.out.println("hols");
             for(Character symbol: alphabet.getSymbols()){
                 setState2 = new SetState(goTo(setState.getStates(), symbol));
                 setState2.setId(setState.getId());
