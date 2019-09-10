@@ -32,9 +32,9 @@ public class AfnTestTeacher {
         /*GEENRAMOS f2-QUEDA EN f21*/
         Afn f21=new Afn('+');
         Afn f22=new Afn('-');
-        //Afn f23=new Afn('0','9');
+        Afn f23=new Afn('0','9');
         Afn f24=new Afn('.');
-        //Afn f25=new Afn('0','9');
+        Afn f25=new Afn('0','9');
         
         f21.addAFN(f22);
         f21.optional();
@@ -76,8 +76,9 @@ public class AfnTestTeacher {
         f11.addAFN(f41);
         f11.addAFN(f51);
         System.out.println(f11.toString());
-        
+        System.out.println("Tabla.--------------------------------------");
         Afd afd=new Afd(f11.generateSetStates(),f11.getAlphabet());
+        System.out.println("nnnn");
         afd.printTable();
     }
 }

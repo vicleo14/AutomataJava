@@ -93,30 +93,61 @@ public class Afd implements IAfd{
     
     @Override
     public void printTable() {
-        String info = "State\t";
+        /*String info = "State\t";
         for(Character c: getAlphabet().getSymbols()){
             info+=c.charValue()+"(Symbol)\t";
         }
         info+="Final\n";
+        
         for(State state : states){
             info+=state.getId()+"\t";
-            for(Transition transition: state.getTransitions()){
-                for(Character c: getAlphabet().getSymbols()){
-                    int lowerLimit, highLimit, symbolInt=(int)c.charValue();
+            for(Character c: getAlphabet().getSymbols()){
+                int lowerLimit, highLimit, symbolInt=(int)c.charValue();
+                for(Transition transition: state.getTransitions()){
                     lowerLimit=(int)transition.getInitialSymbol().charValue();
                     highLimit=(int)transition.getLastSymbol().charValue();
-                    //System.out.println("LowerLimit="+lowerLimit);
-                    //System.out.println("HighLimit="+highLimit);
+                //System.out.println("LowerLimit="+lowerLimit);
+                //System.out.println("HighLimit="+highLimit);
                     if(lowerLimit>=symbolInt && highLimit<=symbolInt){
-                        info+=c.charValue()+"\t";
+                        info+=transition.getNextStates();
+                        break;
                     } else{
-                        info+="-1\t";
+                        info+="\t";
+                        //break;
                     }
                 }
+                info+="\t";
             }
+            
             info+=state.isFinal()+"\t\n";
+        }*/
+        int[][] tabla = new int[states.size()][alphabet.getSymbols().size()];
+        for(State state : states){
+            //info+=state.getId()+"\t";
+            int j=0;
+            for(Character c: getAlphabet().getSymbols()){
+                
+                tabla[state.getId()][j]=state.hastransition(c);
+                System.out.println("["+state.getId()+"]["+j+"]="+tabla[state.getId()][j]);
+                j++;
+            }
         }
+        System.out.println("Tabla:");
+        String info = "State\t";
+        for(Character c: getAlphabet().getSymbols()){
+            info+=c.charValue()+"(Symbol)\t";
+        }
+        info+="Final";
         System.out.println(info);
+        for(State state : states){
+            System.out.print(state.getId()+"\t");
+            for(int j=0; j<alphabet.getSymbols().size(); j++){
+                System.out.print(tabla[state.getId()][j]+"\t\t");
+            }
+            System.out.println(state.isFinal());
+            System.out.println("");
+        }
+        //System.out.println(info);
     }
 
     @Override

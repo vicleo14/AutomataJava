@@ -50,7 +50,7 @@ public class SetState {
     }
 
     public void setId(int id) {
-        id++;
+        //id++;
         this.id = id;
     }
 
@@ -115,6 +115,7 @@ public class SetState {
 
     @Override
     public boolean equals(Object obj) {
+        //System.out.println("Holaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         if (this == obj) {
             return true;
         }
@@ -124,8 +125,23 @@ public class SetState {
         if (getClass() != obj.getClass()) {
             return false;
         }
+        
         final SetState other = (SetState) obj;
-        if (this.id != other.id) {
+        int num=other.getStates().size();
+        if(num!=this.states.size()){
+            return false;
+        }
+        for(IState state2:other.getStates()){
+            for(IState state: this.states){
+                if(state.equals(state2)){
+                    num--;
+                }
+            }
+        }
+        if(num!=0){
+            return false;
+        }
+        /*if (this.id != other.id) {
             return false;
         }
         if (this.initial != other.initial) {
@@ -136,10 +152,11 @@ public class SetState {
         }
         if (!Objects.equals(this.states, other.states)) {
             return false;
-        }
-        if (!Objects.equals(this.transitions, other.transitions)) {
+        }*/
+        
+        /*if (!Objects.equals(this.transitions, other.transitions)) {
             return false;
-        }
+        }*/
         return true;
     }
    
@@ -150,10 +167,11 @@ public class SetState {
         String info="SetStateId="+id+"\n"; 
         info+="Initial="+initial+":\n";
         info+="Final state:"+accepted+"\n";
-        info+="Analysed:"+analyzed+"\n";
+        //info+="Analysed:"+analyzed+"\n";
         info+="=>Set states:"+"\n";
         for(IState state: states){
-            info+=state.toString();
+            info+=state.getId();
+            info+="\n";
         }
         info+="=>Transitions:\n";
         Iterator<Transition> it=transitions.iterator();
