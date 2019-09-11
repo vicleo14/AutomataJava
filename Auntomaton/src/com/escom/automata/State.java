@@ -70,9 +70,9 @@ public class State implements IState {
         return id;
     }
 
-    /*public void setId(Integer id) {
+    public void setId(Integer id) {
         this.id = id;
-    }*/
+    }
 
     public void setTransitions(Collection<Transition> transitions) {
         this.transitions = transitions;

@@ -7,6 +7,7 @@ package com.escom.automata.test.afn;
 
 import com.escom.automata.Afd;
 import com.escom.automata.Afn;
+import com.escom.automata.SetState;
 
 /**
  *
@@ -22,14 +23,18 @@ public class AfnTestTeacher {
         Afn f14=new Afn('.');
         Afn f15=new Afn('d');
         
+        //System.out.println(f11.toString());
         f11.addAFN(f12);
         f11.optional();
+        
+        
         f13.positiveClosure();
         f15.positiveClosure();
         
         f11.concatenateAFN(f13);
         f11.concatenateAFN(f14);
         f11.concatenateAFN(f15);
+        
         
         /*GEENRAMOS f2-QUEDA EN f21*/
         Afn f21=new Afn('+');
@@ -50,6 +55,7 @@ public class AfnTestTeacher {
         Afn f35=new Afn('d');
         
         f31.addAFN(f32);//[a-z]|[A-Z]
+        
         f33.addAFN(f34);//[a-z]|[A-Z]
         f33.addAFN(f35);//[a-z]|[A-Z]|[0-9]
         f33.kleenClosure();
@@ -73,8 +79,11 @@ public class AfnTestTeacher {
         f11.addAFN(f51);
         //System.out.println(f11.toString());
         System.out.println("Tabla.--------------------------------------");
+        /*for(SetState state: f11.generateSetStates()){
+            System.out.println(state.toString());
+        }*/
         Afd afd=new Afd(f11.generateSetStates(),f11.getAlphabet());
-        System.out.println("nnnn");
+        //System.out.println("nnnn");
         afd.printTable();
     }
 }

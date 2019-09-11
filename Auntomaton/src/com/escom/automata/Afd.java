@@ -32,7 +32,7 @@ public class Afd implements IAfd{
 
      public Afd(Collection<SetState> setStates, Alphabet alphabet) {
         init();
-        State.setCounter(new Integer(0));
+        //State.setCounter(new Integer(0));
         for(SetState setState: setStates){
             
             State state = new State(setState.isAccepted());
@@ -45,7 +45,9 @@ public class Afd implements IAfd{
             if(setState.isInitial()){
                 this.initialState=state;
             }
+            state.setId(setState.getId());
             states.add(state);
+            
         }
         this.alphabet = alphabet;
     }
