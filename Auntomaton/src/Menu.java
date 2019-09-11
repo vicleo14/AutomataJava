@@ -90,11 +90,11 @@ public class Menu {
                     System.out.println("**Escoge un AFN para convertirlo**");
                     afn1=selectAutomata();
                     System.out.println("SetStates:");
-                    for(SetState s: afn1.generateSetStates()){
+                    /*for(SetState s: afn1.generateSetStates()){
                         System.out.println(s.toString());
                     }
                     afd = new Afd(afn1.generateSetStates(), afn1.getAlphabet());
-                    afd.printTable();
+                    afd.printTable();*/
                     break;
                 case 8:
                     System.out.println("**Analiza una cadena**");

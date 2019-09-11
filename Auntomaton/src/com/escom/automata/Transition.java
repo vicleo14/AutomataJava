@@ -12,13 +12,13 @@ import java.util.Objects;
 public class Transition
 {
   private Character initialSymbol,lastSymbol;
-  private Collection<Integer> nextStates;
+  private Collection<IState> nextStates;
   public void init()
   {
       nextStates=new HashSet<>();
       
   }
-  public Transition(Character c,Collection<Integer> nextStates)
+  public Transition(Character c,Collection<IState> nextStates)
   {
       init();
       if(nextStates!=null)
@@ -27,14 +27,14 @@ public class Transition
       lastSymbol=c;
       
   }
-  public Transition(Character c,Integer nextState)
+  public Transition(Character c, IState nextState)
   {
       init();
       initialSymbol=c;
       lastSymbol=c;
       nextStates.add(nextState);
   }
-  public Transition(Character initialSymbol,Character lastSymbol,Collection<Integer> nextStates)
+  public Transition(Character initialSymbol,Character lastSymbol,Collection<IState> nextStates)
   {
       init();
       this.initialSymbol=initialSymbol;
@@ -42,14 +42,14 @@ public class Transition
       if(nextStates!=null)
           this.nextStates=nextStates;
   }
-  public Transition(Character initialSymbol,Character lastSymbol,Integer nextState)
+  public Transition(Character initialSymbol,Character lastSymbol,State nextState)
   {
       init();
       this.initialSymbol=initialSymbol;
       this.lastSymbol=lastSymbol;
       nextStates.add(nextState);
   }
-  public Boolean addNextState(Integer i)
+  public Boolean addNextState(State i)
   {
     return nextStates.add(i);
   }
@@ -70,7 +70,7 @@ public class Transition
   {
     return lastSymbol;
   }
-  public Collection<Integer> getNextStates()
+  public Collection<IState> getNextStates()
   {
     return nextStates;
   }
@@ -83,7 +83,7 @@ public class Transition
   {
     this.lastSymbol=c;
   }
-  public void setNextStates(Integer nextState)
+  public void setNextStates(State nextState)
   {
     this.nextStates.add(nextState);
   }
@@ -92,7 +92,7 @@ public class Transition
   {
       String s=(initialSymbol==lastSymbol)?initialSymbol.toString():initialSymbol.toString()+":"+lastSymbol.toString();
       s+="=[";
-      for(Integer i:nextStates)
+      for(IState i:nextStates)
       {
           s+=i+",";
       }

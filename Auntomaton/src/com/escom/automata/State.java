@@ -47,10 +47,10 @@ public class State implements IState {
         return transitions.addAll(t);
     }
     @Override
-    public Collection<Integer> epsilonClosure() {
-        Collection<Integer> c=null;
+    public Collection<IState> epsilonClosure() {
+        Collection<IState> c=null;
         c=new HashSet<>();
-        c.add(this.getId());
+        c.add(this);
         Collection<Transition> transitions = this.getTransitions();
         for(Transition transition: transitions){
             if(transition.getInitialSymbol() == Constants.EPSILON.charValue()){
@@ -124,20 +124,24 @@ public class State implements IState {
     @Override
     public String toString()
     {
+      return ""+id;   
+    }
+    
+    public IState hastransition(char c){
+        for(Transition t : transitions){
+            if(t.getInitialSymbol()==c){               
+                return t.getNextStates().iterator().next();
+            }
+        }
+        return null;
+    }
+    public String description()
+    {
         String info="State "+id+":\n";
         Iterator<Transition> it=transitions.iterator();
         while(it.hasNext())
             info+=it.next().toString()+"\n";
         info+="Final state:"+finalState+"\n";
         return info;
-    }
-    
-    public int hastransition(char c){
-        for(Transition t : transitions){
-            if(t.getInitialSymbol()==c){               
-                return t.getNextStates().iterator().next();
-            }
-        }
-        return -1;
     }
 }

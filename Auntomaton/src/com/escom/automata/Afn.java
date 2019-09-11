@@ -2,6 +2,7 @@
 package com.escom.automata;
 
 import com.escom.automata.util.Constants;
+import com.escom.automata.util.StatesCollection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -33,7 +34,7 @@ public class Afn implements IAfn{
         alphabet.addElement(c0);
         State state1=new State(false);
         State state2=new State(true);
-        Transition t=new Transition(c,c0,state2.getId());
+        Transition t=new Transition(c,c0,state2);
         state1.addTransition(t);
         currentState=state1;
         states.add(state1);
@@ -52,8 +53,8 @@ public class Afn implements IAfn{
     private void init()
     {
         idAfn=counterAfn++;
-        acceptedStates=new HashSet<>();
-        states=new ArrayList<>();
+        acceptedStates=new StatesCollection();
+        states=new StatesCollection();
         //currentState=new State(false);
         alphabet=new Alphabet();
     }
@@ -69,7 +70,7 @@ public class Afn implements IAfn{
         alphabet.addElement(symbol);
         State state1=new State(false);
         State state2=new State(true);
-        Transition t=new Transition(symbol,state2.getId());
+        Transition t=new Transition(symbol,state2);
         state1.addTransition(t);
         currentState=state1;
         states.add(state1);
@@ -82,11 +83,11 @@ public class Afn implements IAfn{
     public void optional() {
         State newInitialState = new State(false);
         State newFinalState = new State(true);
-        Transition transition = new Transition(Constants.EPSILON, ((State)currentState).getId());
+        Transition transition = new Transition(Constants.EPSILON, ((State)currentState));
         newInitialState.addTransition(transition);
         this.setInitialState(newInitialState);
         addAcceptedState(this, newFinalState);
-        transition = new Transition(Constants.EPSILON, newFinalState.getId());
+        transition = new Transition(Constants.EPSILON, newFinalState);
         currentState.addTransition(transition);
         states.add(newInitialState);
         states.add(newFinalState);
@@ -147,8 +148,8 @@ public class Afn implements IAfn{
         State s2=(State)af.currentState;
         Collection<State> states2=af.getStates();
         states.addAll(states2);
-        Transition t1=new Transition(Constants.EPSILON,s.getId());
-        Transition t2=new Transition(Constants.EPSILON,s2.getId());
+        Transition t1=new Transition(Constants.EPSILON,s);
+        Transition t2=new Transition(Constants.EPSILON,s2);
         newIniState.addTransition(t1);
         newIniState.addTransition(t2);
         currentState=newIniState;
@@ -164,7 +165,7 @@ public class Afn implements IAfn{
         while(its1.hasNext())
         {
             State ss=its1.next();
-            ss.addTransition(new Transition(Constants.EPSILON,newFinalState.getId()));
+            ss.addTransition(new Transition(Constants.EPSILON,newFinalState));
             ss.setFinalState(false);
         }
         afn.acceptedStates.clear();
@@ -182,17 +183,16 @@ public class Afn implements IAfn{
         * Cerradura positiva
         * 1.- Creamos un nuevo estado inicial
         * 2.- Creamons un nuevo estado final
-<<<<<<< HEAD
         * 3.- Creamos transiciones epsilon del nuevo estado inicial al estado inicial anterior
         * 4.- Creamos transiciones epsilon de los estados finales anteriores al nuevo estado final
         */
         State newInitialState = new State(false);
         State newFinalState = new State(true);
         State actualInitialState=(State)currentState;
-        Transition transition = new Transition(Constants.EPSILON, actualInitialState.getId());
+        Transition transition = new Transition(Constants.EPSILON, actualInitialState);
         newInitialState.addTransition(transition);
         for (State actualFinalState : acceptedStates) {
-            transition = new Transition(Constants.EPSILON, actualInitialState.getId());
+            transition = new Transition(Constants.EPSILON, actualInitialState);
             actualFinalState.addTransition(transition);
         }
         this.setInitialState(newInitialState);
@@ -210,7 +210,7 @@ public class Afn implements IAfn{
         } else{
             Iterator<State> iterator=this.getAcceptedStates().iterator();
             State actualAcceptedState=iterator.next();
-            Transition transition = new Transition(Constants.EPSILON, actualAcceptedState.getId());
+            Transition transition = new Transition(Constants.EPSILON, actualAcceptedState);
             currentState.addTransition(transition);
        }
     }
@@ -314,7 +314,7 @@ public class Afn implements IAfn{
             IState s=stack.pop();
             if(!c.contains(s))
             {
-                for(IState sp:getStatesByIds(s.epsilonClosure()))
+                for(IState sp:s.epsilonClosure())
                 {
                     stack.add(sp);
                 }
@@ -330,12 +330,9 @@ public class Afn implements IAfn{
     }
     
     public IState getStateById(int id){
-        for(State state: states){
-            if(state.getId()==id){
-                return state;
-            }
-        }
-        return null;
+        StatesCollection sc=(StatesCollection)states;
+        return (IState)sc.get(id);
+        
     }
     
     public Collection<IState> getStatesByIds(Collection<Integer> ids){
@@ -357,35 +354,18 @@ public class Afn implements IAfn{
         return moveStates;
     }
     
-    public Collection<IState> move(IState state, Character symbol){
-        Collection<IState> moveStates;
-        moveStates=new HashSet<>();
-        
-        /*
-        
-        int lowerLimit, highLimit, symbolInt=(int)symbol.charValue();
-        Collection<Transition> transitions = state.getTransitions();
-        int i=0;
-        for(IState s:epsilonClausure(state)){
-            System.out.println("Transitions"+i+": "+s.getTransitions());
-            i++;
-//            transitions.addAll(s.getTransitions());
-        }
-        System.out.println("SIGUIENTE----");
-        for(Transition transition: transitions){
-            //System.out.println("Entre 1");
-            lowerLimit=(int)transition.getInitialSymbol().charValue();
-            highLimit=(int)transition.getLastSymbol().charValue();
-            //System.out.println("LowerLimit="+lowerLimit);
-            //System.out.println("HighLimit="+highLimit);
-            if(lowerLimit>=symbolInt && highLimit<=symbolInt){
-                //System.out.println("Entre 2");
-                for(Integer id: transition.getNextStates()){
-                    moveStates.add(getStateById(id));
-                }
+     
+    public Collection<IState> move(IState e,Character c)
+    {
+        Collection<IState> r=new StatesCollection();
+        for(Transition t:e.getTransitions())
+        {
+            if(t.getInitialSymbol()==c)
+            {
+                r.addAll(t.getNextStates());
             }
-        }*/
-        return moveStates;
+        }
+        return r;
     }
     
     public Collection<IState> goTo(Collection<IState> states, Character symbol){
@@ -396,128 +376,7 @@ public class Afn implements IAfn{
         return epsilonClausure(move(state, symbol));
     }
     
-    /*public Collection<SetState> generateSetStates(){
-        int numId=0;
-        Collection<SetState> s= new HashSet<SetState>();
-        SetState setState, setState2 = null;
-        Stack<SetState> stack = new Stack<SetState>();
-        //System.out.println("Current state:"+epsilonClausure(currentState));
-        stack.push(new SetState(epsilonClausure(currentState), true, false, false,numId));
-        //setState=stack.pop();
-        //System.out.println("S0:"+setState.toString());
-        while(!stack.empty()){
-            System.out.println("------------------------------------------------------------------------------------------------------------------");
-            System.out.println("stack:"+stack.toString());
-            System.out.println("------------------------------------------------------------------------------------------------------------------");
-            setState=stack.pop();
-            //System.out.println("setState111111111111"+setState.toString());
-            
-            for(Character symbol: alphabet.getSymbols()){
-                setState2 = new SetState(goTo(setState.getStates(), symbol));
-                //System.out.println("setState222222222222222"+setState2.toString());
-                if(setState2.getStates().size()<1){
-                    System.out.println("Vacio");
-                    continue;
-                }
-                if(!setState.equals(setState2)){
-                    numId++;
-                    setState2.setId(numId);
-                    stack.push(setState2);
-                    setState.addTransition(new Transition(symbol, new Integer(setState2.getId())));
-                    System.out.println("setState222222222222222"+setState2.toString());
-                }else{
-                    setState.addTransition(new Transition(symbol, new Integer(setState.getId())));
-                }
-            }
-            setState.setAnalyzed(true);
-            
-            s.add(setState);
-            System.out.println("setState111111111111"+setState.toString());
-            
-        }
-        return s;
-    }*/
-
-    public Collection<SetState> generateSetStates(){
-        int numId=0;
-        boolean bandera=false;
-        Collection<SetState> collectionStates= new HashSet<SetState>();
-        SetState aux = null;
-        LinkedList<SetState> cola = new LinkedList<SetState>();
-        //System.out.println("Current state:"+epsilonClausure(currentState));
-        SetState setState=new SetState(epsilonClausure(currentState), true, false, false,numId);
-        cola.add(setState);
-        //setState=stack.pop();
-        //System.out.println("S0:"+setState.toString());
-        collectionStates.add(setState);
-        while(cola.size()>0){
-            //System.out.println("--------------------------------------------INICIO----------------------------------------------------------------------");
-            //System.out.println("Elementos en la cola:"+cola.toString());
-            //System.out.println("--------------------------------------------FIN----------------------------------------------------------------------");
-            setState=cola.removeFirst();
-            System.out.println("Agregado:"+setState.getId());
-            //System.out.println("cola:"+cola.toString());
-            //System.out.println("setState111111111111"+setState.toString());
-            //System.out.println("Anlizando:\n"+setState.toString());
-            for(Character symbol: alphabet.getSymbols()){
-                bandera=false;
-                aux = new SetState(goTo(setState.getStates(), symbol));
-                //System.out.println("setState222222222222222"+setState2.toString());
-                if(aux.getStates().size()<1){
-                    System.out.println("=====================================>Vacio");
-                    continue;
-                }
-                
-                for(SetState ss:collectionStates){
-                    if(ss.equals(aux)){
-                        
-                        //contenido.setTransitions(new Transition(symbol, new Integer(contenido.getId())));
-                        ss.addTransition(new Transition(symbol, new Integer(ss.getId())));
-                        setState.addTransition(new Transition(symbol, new Integer(ss.getId())));
-                        System.out.println("===============================>Ya esta en la coleccion");
-                        //System.out.println("Es igual a:"+ss.getId());
-                        bandera=true;
-                        break;
-                        
-                    }
-                }
-                if(bandera){
-                    continue;
-                } else{
-                    numId++;
-                    aux.setId(numId);
-                    cola.add(aux);
-                    
-                    setState.addTransition(new Transition(symbol, new Integer(aux.getId())));
-                    collectionStates.add(aux);
-                    System.out.println("====================================================>Nueva SetState Agregado a la cola");
-                    //System.out.println("No es igual, info:");
-                    //System.out.println(aux.toString());
-                }
-                /*if(collectionStates.contains(aux)){
-                    for(SetState contenido: collectionStates){
-                        if(contenido.equals(aux)){
-                            //contenido.setTransitions(new Transition(symbol, new Integer(contenido.getId())));
-                            contenido.addTransition(new Transition(symbol, new Integer(contenido.getId())));
-                            //bandera=true;
-                            System.out.println("===============================>Ya esta en la coleccion");
-                            System.out.println("Es igual a:"+contenido.getId());
-                            break;
-                        }
-                    }
-                } else{
-                    numId++;
-                    aux.setId(numId);
-                    cola.add(aux);
-                    System.out.println("====================================================>Nueva SetState Agregado a la cola");
-                    System.out.println("No es igual, info:");
-                    System.out.println(aux.toString());
-                }*/
-                            
-            }
-        }
-        return collectionStates;
-    }
+    
     @Override
     public int hashCode() {
         int hash = 3;

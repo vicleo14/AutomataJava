@@ -127,7 +127,8 @@ public class Afd implements IAfd{
             int j=0;
             for(Character c: getAlphabet().getSymbols()){
                 
-                tabla[state.getId()][j]=state.hastransition(c);
+                tabla[state.getId()][j]=(state.hastransition(c)!=null)?state.hastransition(c).getId()
+                        :-1;
                 System.out.println("["+state.getId()+"]["+j+"]="+tabla[state.getId()][j]);
                 j++;
             }

@@ -9,6 +9,8 @@ import com.escom.automata.Afd;
 import com.escom.automata.Afn;
 import com.escom.automata.IState;
 import com.escom.automata.SetState;
+import com.escom.automata.util.StatesCollection;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -27,21 +29,29 @@ public class TestAfnAbc {
         af11.positiveClosure();
         
         af13.kleenClosure();
-        //System.out.println("Kleen"+af13.toString());
         af11.concatenateAFN(af13);
         
-        //System.out.println(af11.toString());
-        /*System.out.println("8:"+af11.getStateById(8).epsilonClosure());
-        System.out.println("6:"+af11.getStateById(6).epsilonClosure());
-        System.out.println("Currente state:"+af11.getCurrentState().epsilonClosure());
-        System.out.println("Solicitado:"+af11.epsilonClausure(af11.getCurrentState()));
-        System.out.println("------------------------------------------------------");
-        System.out.println("Solicitado3:\n"+af11.epsilonClausure(af11.getStateById(1)));
-        */
-//        System.out.println("Mover 8 con a:"+af11.goTo((Collection<IState>) af11.getStateById(8), 'a'));
-        System.out.println("SetStates:");
-        Afd afd=new Afd(af11.generateSetStates(),af11.getAlphabet());
-        afd.printTable();
+        System.out.println(af11.toString());
+        System.out.println("Cerradura epsilon 8:"+af11.epsilonClausure(af11.getStateById(3)));
+        StatesCollection sc=new StatesCollection();
+        sc.add(af11.getStateById(8));
+        ArrayList<Collection> scAL=new ArrayList<Collection>();
+        for(IState is:af11.getStates())
+        {
+            for(Character c:af11.getAlphabet().getSymbols())
+            {
+                Collection col=af11.goTo(af11.epsilonClausure(is), c);
+                if(!scAL.contains(col) && !col.isEmpty())
+                {
+                    System.out.println("Se agrego "+col);
+                }
+                else if(!col.isEmpty())
+                {
+                    System.out.println("Ya estaba "+col);
+                }
+            }
+        }
+        
         
     }
     

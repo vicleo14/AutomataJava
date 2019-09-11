@@ -53,9 +53,9 @@ public class OtraPinchePrueba {
         for(SetState state: af11.generateSetStates()){
             System.out.println(state.toString());
         }*/
-        Afd afd=new Afd(af11.generateSetStates(),af11.getAlphabet());
+        /*Afd afd=new Afd(af11.generateSetStates(),af11.getAlphabet());
         //System.out.println(afd.toString());
         afd.printTable();
-        System.out.println("Fin");
+        System.out.println("Fin");*/
     }
 }

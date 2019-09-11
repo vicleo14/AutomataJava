@@ -35,7 +35,7 @@ public class AfnTest {
         //System.out.println(f.goTo(f.getStates(), a));
         //System.out.println("analizar aaa");
         //System.out.println("strin="+f.analizeString("a"));
-        System.out.println("SetStates:");
+        /*System.out.println("SetStates:");
         for(SetState s: f.generateSetStates()){
             System.out.println(s.toString());
         }
@@ -44,6 +44,6 @@ public class AfnTest {
         System.out.println("Afd:");
         System.out.println(afd.toString());
         System.out.println("--------------------------------------------------------------");
-        afd.printTable();
+        afd.printTable();*/
     }
 }
