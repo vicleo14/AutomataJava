@@ -401,75 +401,23 @@ public class Afn implements IAfn{
         return epsilonClausure(move(state, symbol));
     }
     
-    /*public Collection<SetState> generateSetStates(){
-        int numId=0;
-        Collection<SetState> s= new HashSet<SetState>();
-        SetState setState, setState2 = null;
-        Stack<SetState> stack = new Stack<SetState>();
-        //System.out.println("Current state:"+epsilonClausure(currentState));
-        stack.push(new SetState(epsilonClausure(currentState), true, false, false,numId));
-        //setState=stack.pop();
-        //System.out.println("S0:"+setState.toString());
-        while(!stack.empty()){
-            System.out.println("------------------------------------------------------------------------------------------------------------------");
-            System.out.println("stack:"+stack.toString());
-            System.out.println("------------------------------------------------------------------------------------------------------------------");
-            setState=stack.pop();
-            //System.out.println("setState111111111111"+setState.toString());
-            
-            for(Character symbol: alphabet.getSymbols()){
-                setState2 = new SetState(goTo(setState.getStates(), symbol));
-                //System.out.println("setState222222222222222"+setState2.toString());
-                if(setState2.getStates().size()<1){
-                    System.out.println("Vacio");
-                    continue;
-                }
-                if(!setState.equals(setState2)){
-                    numId++;
-                    setState2.setId(numId);
-                    stack.push(setState2);
-                    setState.addTransition(new Transition(symbol, new Integer(setState2.getId())));
-                    System.out.println("setState222222222222222"+setState2.toString());
-                }else{
-                    setState.addTransition(new Transition(symbol, new Integer(setState.getId())));
-                }
-            }
-            setState.setAnalyzed(true);
-            
-            s.add(setState);
-            System.out.println("setState111111111111"+setState.toString());
-            
-        }
-        return s;
-    }*/
-
     public Collection<SetState> generateSetStates(){
         int numId=0;
         boolean bandera=false;
         Collection<SetState> collectionStates= new HashSet<SetState>();
         SetState aux = null;
         LinkedList<SetState> cola = new LinkedList<SetState>();
-        //System.out.println("Current state:"+epsilonClausure(currentState));
         SetState setState=new SetState(epsilonClausure(currentState), true, false, false,numId);
         cola.add(setState);
-        //setState=stack.pop();
-        //System.out.println("S0:"+setState.toString());
         collectionStates.add(setState);
         while(cola.size()>0){
-            //System.out.println("--------------------------------------------INICIO----------------------------------------------------------------------");
-            //System.out.println("Elementos en la cola:"+cola.toString());
-            //System.out.println("--------------------------------------------FIN----------------------------------------------------------------------");
             setState=cola.removeFirst();
-            System.out.println("Agregado:"+setState.getId());
-            //System.out.println("cola:"+cola.toString());
-            //System.out.println("setState111111111111"+setState.toString());
-            //System.out.println("Anlizando:\n"+setState.toString());
+            //System.out.println("Agregado:"+setState.getId());
             for(Character symbol: alphabet.getSymbols()){
                 bandera=false;
                 aux = new SetState(goTo(setState.getStates(), symbol));
-                //System.out.println("setState222222222222222"+setState2.toString());
                 if(aux.getStates().size()<1){
-                    System.out.println("=====================================>Vacio");
+                    //System.out.println("=====================================>Vacio");
                     continue;
                 }
                 
@@ -479,7 +427,7 @@ public class Afn implements IAfn{
                         //contenido.setTransitions(new Transition(symbol, new Integer(contenido.getId())));
                         ss.addTransition(new Transition(symbol, new Integer(ss.getId())));
                         setState.addTransition(new Transition(symbol, new Integer(ss.getId())));
-                        System.out.println("===============================>Ya esta en la coleccion");
+                        //System.out.println("===============================>Ya esta en la coleccion");
                         //System.out.println("Es igual a:"+ss.getId());
                         bandera=true;
                         break;
@@ -496,30 +444,8 @@ public class Afn implements IAfn{
                     setState.addTransition(new Transition(symbol, new Integer(aux.getId())));
                     collectionStates.add(aux);
                     
-                    System.out.println("====================================================>Nueva SetState Agregado a la cola");
-                    //System.out.println("No es igual, info:");
-                    //System.out.println(aux.toString());
-                }
-                /*if(collectionStates.contains(aux)){
-                    for(SetState contenido: collectionStates){
-                        if(contenido.equals(aux)){
-                            //contenido.setTransitions(new Transition(symbol, new Integer(contenido.getId())));
-                            contenido.addTransition(new Transition(symbol, new Integer(contenido.getId())));
-                            //bandera=true;
-                            System.out.println("===============================>Ya esta en la coleccion");
-                            System.out.println("Es igual a:"+contenido.getId());
-                            break;
-                        }
-                    }
-                } else{
-                    numId++;
-                    aux.setId(numId);
-                    cola.add(aux);
-                    System.out.println("====================================================>Nueva SetState Agregado a la cola");
-                    System.out.println("No es igual, info:");
-                    System.out.println(aux.toString());
-                }*/
-                            
+                    //System.out.println("====================================================>Nueva SetState Agregado a la cola");
+                }  
             }
         }
         return collectionStates;
