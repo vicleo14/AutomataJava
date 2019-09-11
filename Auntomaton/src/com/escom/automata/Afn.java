@@ -115,6 +115,7 @@ public class Afn implements IAfn{
         }
         else
             finalState1=acceptedStates.iterator().next();
+        
         finalState1.setFinalState(false);
         acceptedStates.remove(finalState1);
         finalState1.addTransitions(af.getCurrentState().getTransitions());
@@ -357,13 +358,23 @@ public class Afn implements IAfn{
         return moveStates;
     }
     
+    public Collection<Transition> deepCopy(Collection<Transition> t){
+        Collection<Transition> nuevoCollection;
+        nuevoCollection= new HashSet<Transition>();
+        for(Transition transition: t){
+            Transition aux = new Transition(transition.getInitialSymbol(),transition.getLastSymbol(),transition.getNextStates());
+            nuevoCollection.add(aux);
+        }
+        return nuevoCollection;
+    }
+    
     public Collection<IState> move(IState state, Character symbol){
         Collection<IState> moveStates;
         moveStates=new HashSet<>();
         int lowerLimit, highLimit, symbolInt=(int)symbol.charValue();
         Collection<Transition> transitions = state.getTransitions();
         for(IState s:epsilonClausure(state)){
-            transitions.addAll(s.getTransitions());
+            transitions.addAll(deepCopy(s.getTransitions()));
         }
         
         for(Transition transition: transitions){
@@ -484,6 +495,7 @@ public class Afn implements IAfn{
                     
                     setState.addTransition(new Transition(symbol, new Integer(aux.getId())));
                     collectionStates.add(aux);
+                    
                     System.out.println("====================================================>Nueva SetState Agregado a la cola");
                     //System.out.println("No es igual, info:");
                     //System.out.println(aux.toString());
