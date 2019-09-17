@@ -17,8 +17,8 @@ import java.util.Iterator;
  */
 public class Afd implements IAfd{
 
-    private Collection<State> acceptedStates;
-    private Collection<State> states;
+    private StatesCollection acceptedStates;
+    private StatesCollection states;
     private IState currentState;
     private IState initialState;
     private Alphabet alphabet;
@@ -32,7 +32,7 @@ public class Afd implements IAfd{
         this.afdTable = afdTable;
     }
 
-    public Afd(Collection<State> acceptedStates, Collection<State> states, IState currentState, IState initialState, Alphabet alphabet) {
+    public Afd(StatesCollection acceptedStates, StatesCollection states, IState currentState, IState initialState, Alphabet alphabet) {
         this.acceptedStates = acceptedStates;
         this.states = states;
         this.currentState = currentState;
@@ -70,7 +70,7 @@ public class Afd implements IAfd{
         return acceptedStates;
     }
 
-    public void setAcceptedStates(Collection<State> acceptedStates) {
+    public void setAcceptedStates(StatesCollection acceptedStates) {
         this.acceptedStates = acceptedStates;
     }
 
@@ -78,7 +78,7 @@ public class Afd implements IAfd{
         return states;
     }
 
-    public void setStates(Collection<State> states) {
+    public void setStates(StatesCollection states) {
         this.states = states;
     }
 
@@ -120,7 +120,28 @@ public class Afd implements IAfd{
 
     @Override
     public Boolean analizeString(String string) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         Integer actualToken=-1;
+         Integer nextState=currentState.getId();
+         for (int i = 0; i < string.length(); i++)
+         {
+             
+            nextState=afdTable.nextState(nextState,string.charAt(i));
+            currentState=(IState)states.get(nextState);
+           
+            if(nextState==-1)
+            {   
+                actualToken=-1;
+                break;
+            }
+             System.out.println("Estado "+nextState+" con "+string.charAt(i)+" y token "+currentState.getToken());
+            if((actualToken=currentState.getToken())!=-1)
+            {
+                System.out.println("TOKEN:"+currentState.getToken());
+            }
+            
+        }
+         
+         return (actualToken!=-1)?true:false;
     }
     private void init()
     {

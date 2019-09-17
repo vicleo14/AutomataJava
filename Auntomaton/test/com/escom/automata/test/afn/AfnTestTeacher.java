@@ -22,9 +22,9 @@ public class AfnTestTeacher {
         /*GEENRAMOS f1-QUEDA EN f11*/
         Afn f11=new Afn('+');
         Afn f12=new Afn('-');
-        Afn f13=new Afn('d');
+        Afn f13=new Afn('0','9');
         Afn f14=new Afn('.');
-        Afn f15=new Afn('d');
+        Afn f15=new Afn('0','9');
         
         //System.out.println(f11.toString());
         f11.addAFN(f12);
@@ -43,7 +43,7 @@ public class AfnTestTeacher {
         /*GEENRAMOS f2-QUEDA EN f21*/
         Afn f21=new Afn('+');
         Afn f22=new Afn('-');
-        Afn f23=new Afn('d');
+        Afn f23=new Afn('0','9');
         
         f21.addAFN(f22);
         f21.optional();
@@ -52,11 +52,11 @@ public class AfnTestTeacher {
         f21.concatenateAFN(f23);
         f21.associateToken(20);
         /*GENERAMOS f3-QUEDA EN f31*/
-        Afn f31=new Afn('a');
-        Afn f32=new Afn('A');
-        Afn f33=new Afn('a');
-        Afn f34=new Afn('A');
-        Afn f35=new Afn('d');
+        Afn f31=new Afn('a','z');
+        Afn f32=new Afn('A','Z');
+        Afn f33=new Afn('a','z');
+        Afn f34=new Afn('A','Z');
+        Afn f35=new Afn('0','9');
         f31.addAFN(f32);//[a-z]|[A-Z]
         f33.addAFN(f34);//[a-z]|[A-Z]
         f33.addAFN(f35);//[a-z]|[A-Z]|[0-9]
@@ -83,6 +83,7 @@ public class AfnTestTeacher {
         Scanner sc=new Scanner(System.in);
         Afd afd=afnc.convertAfn(f11);
         afd.getAfdTable().print();
+        System.out.println(afd.analizeString("victor10+9"));
         
     }
 }

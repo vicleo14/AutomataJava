@@ -30,8 +30,11 @@ public class Afn implements IAfn{
 
     public Afn(char c, char c0) {
         init();
-        alphabet.addElement(c);
-        alphabet.addElement(c0);
+        for (int i = c; i <= c0; i++)
+        {
+            alphabet.addElement((char) i);
+        }
+        
         State state1=new State(false);
         State state2=new State(true);
         Transition t=new Transition(c,c0,state2);
@@ -384,7 +387,7 @@ public class Afn implements IAfn{
         Collection<IState> r=new StatesCollection();
         for(Transition t:e.getTransitions())
         {
-            if(t.getInitialSymbol()==c)
+            if(t.getInitialSymbol()<=c && t.getLastSymbol()>=c)
             {
                 r.addAll(t.getNextStates());
             }
