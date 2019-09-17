@@ -61,6 +61,10 @@ public class Afn implements IAfn{
         //currentState=new State(false);
         alphabet=new Alphabet();
     }
+    public Afn()
+    {
+        init();
+    }
     public Afn(Character symbol)
     {
         /*

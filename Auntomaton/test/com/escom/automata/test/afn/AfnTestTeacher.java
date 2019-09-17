@@ -9,6 +9,7 @@ import com.escom.automata.Afd;
 import com.escom.automata.AfdTable;
 import com.escom.automata.Afn;
 import com.escom.automata.AfnConverter;
+import com.escom.automata.lexic.LexicAnalyzer;
 import java.util.Scanner;
 
 /**
@@ -77,13 +78,26 @@ public class AfnTestTeacher {
         f11.addAFN(f31);
         f11.addAFN(f41);
         f11.addAFN(f51);
-        System.out.println("Tabla.--------------------------------------");
+        //System.out.println("Tabla.--------------------------------------");
 
         AfnConverter afnc=new AfnConverter();
         Scanner sc=new Scanner(System.in);
         Afd afd=afnc.convertAfn(f11);
         afd.getAfdTable().print();
-        System.out.println(afd.analizeString("+10.98"));
+        //System.out.println(afd.analizeString("+10.98"));
+        LexicAnalyzer lexic=new LexicAnalyzer("9.81",afd.getAfdTable());
+        
+        while(true)
+        {
+            Integer yyLexValue=lexic.yyLex();
+            if(yyLexValue==0)
+            {
+                System.out.println("TRUENA");
+                break;
+            }
+                
+            System.out.println("yyLex:"+yyLexValue+" con lexema "+lexic.getLexeme());
+        }
         
     }
 }
