@@ -78,7 +78,29 @@ public class Afn implements IAfn{
         acceptedStates.add(state2);
         currentState=state1;
     }
+    public Afn(Character symbol,Integer token)
+    {
+        init();
+        alphabet.addElement(symbol);
+        State state1=new State(false);
+        State state2=new State(true);
+        state2.setToken(token);
+        Transition t=new Transition(symbol,state2);
+        state1.addTransition(t);
+        currentState=state1;
+        states.add(state1);
+        states.add(state2);
+        acceptedStates.add(state2);
+        currentState=state1;
+    }
 
+    public void associateToken(Integer token)
+    {
+        for(IState s:acceptedStates)
+        {
+            s.setToken(token);
+        }
+    }
     @Override
     public void optional() {
         State newInitialState = new State(false);
@@ -122,6 +144,7 @@ public class Afn implements IAfn{
         af.getStates().remove(af.currentState);
         this.states.addAll(af.getStates());
         acceptedStates.addAll(af.getAcceptedStates());
+        states.add(finalState1);
     }
     public Integer selectFinalState()
     {
@@ -156,8 +179,8 @@ public class Afn implements IAfn{
         addAcceptedState(this,newFinalState);
         addAcceptedState(af,newFinalState);
         
-        acceptedStates.clear();
-        acceptedStates.add(newFinalState);
+        //acceptedStates.clear();
+        //acceptedStates.add(newFinalState);
     }
     public void addAcceptedState(Afn afn,State newFinalState)
     {
@@ -271,7 +294,7 @@ public class Afn implements IAfn{
         Iterator<State> statesIt=this.states.iterator();
         while(statesIt.hasNext())
         {
-            info+=statesIt.next().toString();
+            info+=statesIt.next().description();
         }
         info+="--CURRENT STATE--\n";
         info+=currentState.toString()+"\n";
@@ -279,7 +302,8 @@ public class Afn implements IAfn{
         Iterator<State> acc=this.acceptedStates.iterator();
         while(acc.hasNext())
         {
-            info+=acc.next().getId()+",";
+            IState s=acc.next();
+            info+=s.getId()+":"+s.getToken()+",";
         }
         return info;
     }

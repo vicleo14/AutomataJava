@@ -7,6 +7,7 @@ package com.escom.automata.test.afn;
 
 import com.escom.automata.Afd;
 import com.escom.automata.Afn;
+import com.escom.automata.AfnConverter;
 import com.escom.automata.IState;
 import com.escom.automata.SetState;
 import com.escom.automata.util.StatesCollection;
@@ -33,26 +34,8 @@ public class TestAfnAbc {
         
         System.out.println(af11.toString());
         System.out.println("Cerradura epsilon 8:"+af11.epsilonClausure(af11.getStateById(3)));
-        StatesCollection sc=new StatesCollection();
-        sc.add(af11.getStateById(8));
-        ArrayList<Collection> scAL=new ArrayList<Collection>();
-        for(IState is:af11.getStates())
-        {
-            for(Character c:af11.getAlphabet().getSymbols())
-            {
-                Collection col=af11.goTo(af11.epsilonClausure(is), c);
-                if(!scAL.contains(col) && !col.isEmpty())
-                {
-                    System.out.println("Se agrego "+col);
-                }
-                else if(!col.isEmpty())
-                {
-                    System.out.println("Ya estaba "+col);
-                }
-            }
-        }
-        
-        
+        AfnConverter afnc=new AfnConverter();
+        afnc.convertAfn(af11);
     }
     
 }

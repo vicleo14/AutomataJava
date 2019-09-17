@@ -7,8 +7,8 @@ package com.escom.automata;
 
 /**
  *
- * @author art
+ * @author Victor
  */
-public interface IAfd extends IAutomata{
-    public AfdTable getAfdTable();
+public class StatesCollecion {
+    
 }

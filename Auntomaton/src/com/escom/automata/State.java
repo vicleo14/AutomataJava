@@ -11,13 +11,46 @@ import java.util.Stack;
 public class State implements IState {
   static Integer counter=0;
   private Integer id;
+  private Integer token;
   private Collection<Transition> transitions;
   private Boolean finalState;
+
+    public Integer getToken() {
+        return token;
+    }
+
+    public void setToken(Integer token) {
+        this.token = token;
+    }
+  
+    public State(Integer id,Integer token)
+    {
+        this.id=id;
+        transitions=new ArrayList<>();
+        
+        this.finalState=(token!=-1)?true:false;
+        this.token=token;
+    }
+    public State(Integer id,Boolean finalState,Integer token)
+    {
+        this.id=id;
+        transitions=new ArrayList<>();
+        this.finalState=finalState;
+        this.token=token;
+    }
+    public State(Integer id,Boolean finalState)
+    {
+        this.id=id;
+        transitions=new ArrayList<>();
+        this.finalState=finalState;
+        token=-1;
+    }
     public State(Boolean finalState)
     {
         id=counter++;
         transitions=new ArrayList<>();
         this.finalState=finalState;
+        token=-1;
     }
     @Override
     public Boolean isFinal()
@@ -102,8 +135,13 @@ public class State implements IState {
     }
 
     @Override
+    public String toString()
+    {
+      return ""+id;   
+    }
+
+    @Override
     public boolean equals(Object obj) {
-        
         if (this == obj) {
             return true;
         }
@@ -114,22 +152,21 @@ public class State implements IState {
             return false;
         }
         final State other = (State) obj;
-        //System.out.println("Este estado:"+this.getId());
-        //System.out.println("Otro estado:"+other.getId());
         if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (!Objects.equals(this.transitions, other.transitions)) {
+            return false;
+        }
+        if (!Objects.equals(this.finalState, other.finalState)) {
             return false;
         }
         return true;
     }
-    @Override
-    public String toString()
-    {
-      return ""+id;   
-    }
     
-    public IState hastransition(char c){
+    public IState hastransition(Character c){
         for(Transition t : transitions){
-            if(t.getInitialSymbol()==c){               
+            if(t.getInitialSymbol().equals(c)){   
                 return t.getNextStates().iterator().next();
             }
         }

@@ -14,5 +14,7 @@ public interface IState
   public Boolean addTransition(Transition t);
   public Collection<Transition> getTransitions();
   public Integer getId();
+  public Integer getToken();
+  public void setToken(Integer token);
   
 }
