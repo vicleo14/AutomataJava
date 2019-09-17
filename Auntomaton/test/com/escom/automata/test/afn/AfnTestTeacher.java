@@ -32,7 +32,7 @@ public class AfnTestTeacher {
         
         
         f13.positiveClosure();
-        //f15.positiveClosure();
+        f15.positiveClosure();
         
         f11.concatenateAFN(f13);
         f11.concatenateAFN(f14);
@@ -83,7 +83,7 @@ public class AfnTestTeacher {
         Scanner sc=new Scanner(System.in);
         Afd afd=afnc.convertAfn(f11);
         afd.getAfdTable().print();
-        System.out.println(afd.analizeString("victor10+9"));
+        System.out.println(afd.analizeString("+10.98"));
         
     }
 }
