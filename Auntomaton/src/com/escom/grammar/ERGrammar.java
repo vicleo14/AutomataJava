@@ -16,7 +16,11 @@ import com.escom.automata.util.Constants;
  */
 public class ERGrammar {
     private LexicAnalyzer lexic;
-    Boolean E(IAfn f)
+    public ERGrammar(LexicAnalyzer lexic)
+    {
+        this.lexic=lexic;
+    }
+    public Boolean E(IAfn f)
     {
         if(T(f))
         {
@@ -27,7 +31,7 @@ public class ERGrammar {
         }
         return false;
     }
-    Boolean Ep(IAfn f)
+    public Boolean Ep(IAfn f)
     {
         int token;
         IAfn f2=new Afn();
@@ -47,7 +51,7 @@ public class ERGrammar {
         lexic.undoYylex();
         return true;
     }
-    Boolean T(IAfn f)//CUIDADO CON EL RETURN
+    public Boolean T(IAfn f)//CUIDADO CON EL RETURN
     {
         if(C(f))
         {
@@ -58,7 +62,7 @@ public class ERGrammar {
         }
         return false;
     }
-    Boolean Tp(IAfn f)
+    public Boolean Tp(IAfn f)
     {
         int token;
         IAfn f2=new Afn();
@@ -68,6 +72,7 @@ public class ERGrammar {
             if(C(f2))
             {
                 f.concatenateAFN(f2);
+                System.out.println("CONCATENA "+f.getAcceptedStates() +" con "+f2.getAcceptedStates());
                 if(Tp(f))
                 {
                     return true;
@@ -78,7 +83,7 @@ public class ERGrammar {
         lexic.undoYylex();
         return true;
     }
-    Boolean C(IAfn f)
+    public Boolean C(IAfn f)
     {
         if(F(f))
         {
@@ -89,7 +94,7 @@ public class ERGrammar {
         }
         return false;
     }
-    Boolean Cp(IAfn f)
+    public Boolean Cp(IAfn f)
     {
         int token;
         token=lexic.getToken();
@@ -123,7 +128,7 @@ public class ERGrammar {
         lexic.undoYylex();
         return true;
     }
-    Boolean F(IAfn f)
+    public Boolean F(IAfn f)
     {
         Integer token;
         token=lexic.getToken();
@@ -140,7 +145,8 @@ public class ERGrammar {
                 }
                 return false;
             case Constants.SIMB:
-                f=new Afn(lexic.getLexeme(0));
+                f=new Afn(lexic.getLexeme().charAt(0));
+                System.out.println("Se crea automata con "+lexic.getLexeme()+f.toString());
                 return true;
         }
         return false;

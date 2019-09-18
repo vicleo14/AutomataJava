@@ -121,7 +121,8 @@ public class Afd implements IAfd{
     @Override
     public Boolean analizeString(String string) {
          Integer actualToken=-1;
-         Integer nextState=currentState.getId();
+         //Integer nextState=currentState.getId();
+         Integer nextState=0;
          for (int i = 0; i < string.length(); i++)
          {
              
@@ -133,10 +134,10 @@ public class Afd implements IAfd{
                 actualToken=-1;
                 break;
             }
-             System.out.println("Estado "+nextState+" con "+string.charAt(i)+" y token "+currentState.getToken());
+             //System.out.println("Estado "+nextState+" con "+string.charAt(i)+" y token "+currentState.getToken());
             if((actualToken=currentState.getToken())!=-1)
             {
-                System.out.println("TOKEN:"+currentState.getToken());
+                //System.out.println("TOKEN:"+currentState.getToken());
             }
             
         }
