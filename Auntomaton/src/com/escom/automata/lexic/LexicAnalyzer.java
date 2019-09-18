@@ -81,7 +81,7 @@ public class LexicAnalyzer {
                     token=x;
                     hadAcceptedState=true;
                     lastLexeme=actualCharacter;
-                    //System.out.println("LEXEMA DETECTADO: "+s.substring(iniLexeme,lastLexeme+1));
+                    //System.out.println("LEXEMA DETECTADO: "+s.substring(iniLexeme,lastLexeme+1)+ " CON TOKEN "+token);
                 }
                 actualCharacter++;               
             }

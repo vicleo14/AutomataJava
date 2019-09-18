@@ -105,6 +105,7 @@ public class Menu {
                     }*/
                     AfnConverter afnConverter = new AfnConverter();
                     afd=afnConverter.convertAfn(afn1);
+                    afd.getAfdTable().print();
                     
                     break;
                 case 8:
@@ -116,6 +117,17 @@ public class Menu {
                         System.out.println("La caena es valida");
                     }else{
                         System.out.println("La caena NO es valida");
+                    }
+                    LexicAnalyzer lexic2=new LexicAnalyzer(cad,afd.getAfdTable());
+                    while(true)
+                    {
+                        Integer yyLexValue=lexic2.yyLex();
+                        if(yyLexValue==0)
+                        {
+                            break;
+                        }
+
+                        System.out.println("yyLex:"+yyLexValue+" con lexema "+lexic2.getLexeme());
                     }
                     break;
                 case 9:
