@@ -74,16 +74,9 @@ public class Afn implements IAfn{
         * 3.- Creamos la transición del estado 1 al 2
         */
         init();
-        alphabet.addElement(symbol);
-        State state1=new State(false);
-        State state2=new State(true);
-        Transition t=new Transition(symbol,state2);
-        state1.addTransition(t);
-        currentState=state1;
-        states.add(state1);
-        states.add(state2);
-        acceptedStates.add(state2);
-        currentState=state1;
+        createBasic(symbol);
+        
+        
     }
     public Afn(Character symbol,Integer token)
     {
@@ -431,6 +424,19 @@ public class Afn implements IAfn{
             return false;
         }
         return true;
+    }
+    public void createBasic(Character symbol)
+    {
+        alphabet.addElement(symbol);
+        State state1=new State(false);
+        State state2=new State(true);
+        Transition t=new Transition(symbol,state2);
+        state1.addTransition(t);
+        currentState=state1;
+        states.add(state1);
+        states.add(state2);
+        acceptedStates.add(state2);
+        currentState=state1;
     }
     
 }

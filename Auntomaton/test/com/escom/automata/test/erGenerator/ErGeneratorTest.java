@@ -5,34 +5,38 @@
  */
 package com.escom.automata.test.erGenerator;
 
+import com.escom.automata.Afd;
 import com.escom.automata.Afn;
+import com.escom.automata.AfnConverter;
 import com.escom.automata.IAfn;
 import com.escom.automata.er.ERAutomata;
 import com.escom.automata.er.ERAutomata2;
 import com.escom.automata.lexic.LexicAnalyzer;
+import com.escom.automata.util.IOClass;
 import com.escom.grammar.ERGrammar;
+import java.util.Scanner;
 
 public class ErGeneratorTest {
     public static void main(String args[])
     {
-        String s="(a|b)?&9+&8+";
+        IOClass io=new IOClass();
+        String s="(0|1|2|3|4|5|6|7|8|9)&(0|1|2|3|4|5|6|7|8|9)*&.&(0|1|2|3|4|5|6|7|8|9)&(0|1|2|3|4|5|6|7|8|9)*";
         ERAutomata2 erA=new ERAutomata2();
-        erA.getAfd().getAfdTable().print();
+        //erA.getAfd().getAfdTable().print();
         //System.out.println(afd.analizeString("+10.98"));
         LexicAnalyzer lexic=new LexicAnalyzer(s,erA.getAfd().getAfdTable());
         ERGrammar erG=new ERGrammar(lexic);
         IAfn f=new Afn();
         erG.E(f);
-        System.out.println(f.toString());
-        /*while(true)
-        {
-            Integer yyLexValue=lexic.yyLex();
-            if(yyLexValue==0)
-            {
-                break;
-            }
-                
-            System.out.println("yyLex:"+yyLexValue+" con lexema "+lexic.getLexeme());
-        }*/
+        System.out.println("Ingresa un token para este automata =)");
+        f.associateToken(io.askForToken());
+        
+        
+        /*CONVERTIMOS*/
+        AfnConverter afnc=new AfnConverter();
+        Afd afd=afnc.convertAfn(f);
+        afd.getAfdTable().print();
+        System.out.println(afd.analizeString(io.askForString()));
+        
     }
 }

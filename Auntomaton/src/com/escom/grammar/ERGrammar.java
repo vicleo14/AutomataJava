@@ -9,6 +9,7 @@ import com.escom.automata.Afn;
 import com.escom.automata.IAfn;
 import com.escom.automata.lexic.LexicAnalyzer;
 import com.escom.automata.util.Constants;
+import com.escom.automata.util.IOClass;
 
 /**
  *
@@ -22,6 +23,7 @@ public class ERGrammar {
     }
     public Boolean E(IAfn f)
     {
+        //System.out.println("Llama a E");
         if(T(f))
         {
             if(Ep(f))
@@ -33,6 +35,7 @@ public class ERGrammar {
     }
     public Boolean Ep(IAfn f)
     {
+        //System.out.println("Llama a Ep");
         int token;
         IAfn f2=new Afn();
         token=lexic.getToken();
@@ -53,6 +56,7 @@ public class ERGrammar {
     }
     public Boolean T(IAfn f)//CUIDADO CON EL RETURN
     {
+        //System.out.println("Llama a T");
         if(C(f))
         {
             if(Tp(f))
@@ -64,6 +68,7 @@ public class ERGrammar {
     }
     public Boolean Tp(IAfn f)
     {
+        //System.out.println("Llama a Tp");
         int token;
         IAfn f2=new Afn();
         token=lexic.getToken();
@@ -72,7 +77,7 @@ public class ERGrammar {
             if(C(f2))
             {
                 f.concatenateAFN(f2);
-                System.out.println("CONCATENA "+f.getAcceptedStates() +" con "+f2.getAcceptedStates());
+                //System.out.println("CONCATENA "+f.getAcceptedStates() +" con "+f2.getAcceptedStates());
                 if(Tp(f))
                 {
                     return true;
@@ -85,8 +90,10 @@ public class ERGrammar {
     }
     public Boolean C(IAfn f)
     {
+        //System.out.println("Llama a C");
         if(F(f))
         {
+            //System.out.println("AUTOMATA EN C:"+f.toString());
             if(Cp(f))
             {
                 return true;
@@ -96,8 +103,11 @@ public class ERGrammar {
     }
     public Boolean Cp(IAfn f)
     {
+        //System.out.println("Llama a Cp");
         int token;
         token=lexic.getToken();
+        //System.out.println("LLEGA AUTOMATA---------------------");
+        //System.out.println(f.toString());
         switch(token)
         {
 
@@ -130,6 +140,7 @@ public class ERGrammar {
     }
     public Boolean F(IAfn f)
     {
+        //System.out.println("Llama a F");
         Integer token;
         token=lexic.getToken();
         switch(token)
@@ -145,8 +156,9 @@ public class ERGrammar {
                 }
                 return false;
             case Constants.SIMB:
-                f=new Afn(lexic.getLexeme().charAt(0));
-                System.out.println("Se crea automata con "+lexic.getLexeme()+f.toString());
+                IOClass io=new IOClass();
+                f.createBasic(lexic.getLexeme().charAt(0));
+                //f.associateToken(io.askForToken());
                 return true;
         }
         return false;

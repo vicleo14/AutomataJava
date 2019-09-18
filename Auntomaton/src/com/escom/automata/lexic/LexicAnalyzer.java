@@ -26,7 +26,7 @@ public class LexicAnalyzer {
     
     public LexicAnalyzer(String cad,AfdTable afdTable)
     {
-        s=cad+"\0";
+        s=cad+"$\0";
         this.afdTable=afdTable;
         p=new Stack<>();
         actualCharacter=0;
@@ -36,7 +36,7 @@ public class LexicAnalyzer {
     public Integer getToken()
     {
         Integer tok=yyLex();//REVISAR
-        System.out.println("Analiza con "+tok+" y lexema "+lexeme);
+        //System.out.println("Analiza con "+tok+" y lexema "+lexeme);
         return tok;
     }
     public void undoYylex()

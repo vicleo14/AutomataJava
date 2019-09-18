@@ -1,7 +1,13 @@
 
 import com.escom.automata.Afd;
 import com.escom.automata.Afn;
+import com.escom.automata.AfnConverter;
+import com.escom.automata.IAfn;
 import com.escom.automata.SetState;
+import com.escom.automata.er.ERAutomata2;
+import com.escom.automata.lexic.LexicAnalyzer;
+import com.escom.automata.util.IOClass;
+import com.escom.grammar.ERGrammar;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -33,14 +39,17 @@ public class Menu {
             System.out.println("6.-Operador opcional");
             System.out.println("7.-Convertir a AFD");
             System.out.println("8.-Analizar cadena con AFD");
+            System.out.println("9.-Crear automata a partir de er");
 
             switch(sc.nextInt())
             {
                 case 1:
                     System.out.println("Introduce un caracter");
                     Afn afn=new Afn(sc.next().charAt(0));
-                    afns.put(afn.getIdAfn(),afn);
                     System.out.println("AFN "+afn.getIdAfn()+" creado");
+                    
+                    afns.put(afn.getIdAfn(),afn);
+                    asignarTokenAutomata(afn);
                     System.out.println(afn.toString());
                     break;
                 case 2:
@@ -58,6 +67,7 @@ public class Menu {
                     System.out.println("Selecciones los AFN a concatenar");
                     System.out.println("**AFN 1**");
                     afn1=selectAutomata();
+                    afn1.associateToken(-1);
                     System.out.println("**AFN 2**");
                     afn2=selectAutomata();
                     afn1.concatenateAFN(afn2);
@@ -89,19 +99,39 @@ public class Menu {
                 case 7:
                     System.out.println("**Escoge un AFN para convertirlo**");
                     afn1=selectAutomata();
-                    System.out.println("SetStates:");
-                    /*for(SetState s: afn1.generateSetStates()){
+                    /*System.out.println("SetStates:");
+                    for(SetState s: afn1.generateSetStates()){
                         System.out.println(s.toString());
-                    }
-                    afd = new Afd(afn1.generateSetStates(), afn1.getAlphabet());
-                    afd.printTable();*/
+                    }*/
+                    AfnConverter afnConverter = new AfnConverter();
+                    afd=afnConverter.convertAfn(afn1);
+                    
                     break;
                 case 8:
                     System.out.println("**Analiza una cadena**");
                     System.out.println("Ingresa  una cadena:");
                     String cad=sc.next();
-                    afd.analizeString(cad);
+                    System.out.println("Cadena="+cad);
+                    if(afd.analizeString(cad)){
+                        System.out.println("La caena es valida");
+                    }else{
+                        System.out.println("La caena NO es valida");
+                    }
                     break;
+                case 9:
+                    IOClass io=new IOClass();
+                    System.out.println("Proporciona una expresión de regular");
+                    String s=sc.next();;
+                    ERAutomata2 erA=new ERAutomata2();
+                    LexicAnalyzer lexic=new LexicAnalyzer(s,erA.getAfd().getAfdTable());
+                    ERGrammar erG=new ERGrammar(lexic);
+                    Afn f=new Afn();
+                    erG.E(f);
+                    afns.put(f.getIdAfn(), f);
+                    System.out.println("Ingresa un token para este automata =)");
+                    f.associateToken(io.askForToken());
+                    break;
+              
                 default: System.exit(0);
             }    
         }
@@ -112,5 +142,10 @@ public class Menu {
         afns.forEach((k,v)->System.out.println("Automata "+k));
         System.out.println("Selecciones un indice:");
         return afns.get(sc.nextInt());
+    }
+    public void asignarTokenAutomata(Afn afn){
+        IOClass io=new IOClass();
+        System.out.println("Seleccione el automata a agregar el token");
+        selectAutomata().associateToken(io.askForToken());
     }
 }
