@@ -11,6 +11,7 @@ public class Constants {
     public static final int PAR_D=123441;
     public static final int SIMB=123442;
     public static final int END=0;
+    public static final int END_CAD=(int)'$';
     public static final int ERROR=1000;
     
 }

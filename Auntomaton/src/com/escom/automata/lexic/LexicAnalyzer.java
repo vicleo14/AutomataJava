@@ -26,7 +26,7 @@ public class LexicAnalyzer {
     
     public LexicAnalyzer(String cad,AfdTable afdTable)
     {
-        s=cad+'\0';
+        s=cad+"$\0";
         this.afdTable=afdTable;
         p=new Stack<>();
         actualCharacter=0;
@@ -65,47 +65,42 @@ public class LexicAnalyzer {
             }
             if(indiceAlfabeto==-1)
             {
-                
                 return asteriscoVerde();
             }
+             //System.out.print("EVALUA '"+s.charAt(actualCharacter)+"' con i="+actualState+" y j="+indiceAlfabeto);
             actualState=afdTable.getTableTransition()[actualState][indiceAlfabeto];
+            //System.out.println(" y nos da:"+actualState);
             if(actualState!=-1)
             {
                 int x=afdTable.getTableTransition()[actualState][afdTable.getSymbols().size()];
                 if(x!=-1)
                 {
                     
-                    System.out.println("Entra A ESTADO VALIDO CON TOKEN "+x);
                     token=x;
                     hadAcceptedState=true;
                     lastLexeme=actualCharacter;
-                    actualCharacter++;
+                    //System.out.println("LEXEMA DETECTADO: "+s.substring(iniLexeme,lastLexeme+1));
                 }
-                else
-                {
-                    actualCharacter++;
-                    return asteriscoVerde();
-                }
-                
+                actualCharacter++;               
             }
             else
             {
-                System.out.println("Entra A ESTADO no VALIDO");
+                
+                //System.out.println("TRUENA AQUI2 con i="+actualState+" y j="+indiceAlfabeto);
                 return asteriscoVerde();
             }
         }
-        
         return 0;
     }
     private Integer asteriscoVerde()
     {
         if(!hadAcceptedState)
         {
-            lexeme=s.substring(actualCharacter, actualCharacter);
+            lexeme=s.substring(actualCharacter, actualCharacter+1);
             actualCharacter=++iniLexeme;
             return Constants.ERROR;
         }
-        lexeme=s.substring(iniLexeme,lastLexeme);
+        lexeme=s.substring(iniLexeme,lastLexeme+1);
         actualCharacter=++lastLexeme;
         return token;
     }

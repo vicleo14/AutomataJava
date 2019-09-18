@@ -85,14 +85,13 @@ public class AfnTestTeacher {
         Afd afd=afnc.convertAfn(f11);
         afd.getAfdTable().print();
         //System.out.println(afd.analizeString("+10.98"));
-        LexicAnalyzer lexic=new LexicAnalyzer("9.81",afd.getAfdTable());
+        LexicAnalyzer lexic=new LexicAnalyzer("+9.81+victor-8+12.06",afd.getAfdTable());
         
         while(true)
         {
             Integer yyLexValue=lexic.yyLex();
             if(yyLexValue==0)
             {
-                System.out.println("TRUENA");
                 break;
             }
                 
