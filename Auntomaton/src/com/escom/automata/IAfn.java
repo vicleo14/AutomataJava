@@ -23,4 +23,6 @@ public interface IAfn extends IAutomata
     public void createBasic(Character symbol);
     public void createBasic(Character a,Character b);
     public void associateToken(Integer token);
+    public void setCurrentState(IState state);
+    public Integer getIdAfn();
 }

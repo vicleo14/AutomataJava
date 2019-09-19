@@ -7,6 +7,7 @@ import com.escom.automata.SetState;
 import com.escom.automata.er.ERAutomata2;
 import com.escom.automata.lexic.LexicAnalyzer;
 import com.escom.automata.util.IOClass;
+import com.escom.automata.util.UnionEspecial;
 import com.escom.grammar.ERGrammar;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +40,8 @@ public class Menu {
             System.out.println("6.-Operador opcional");
             System.out.println("7.-Convertir a AFD");
             System.out.println("8.-Analizar cadena con AFD");
-            System.out.println("9.-Crear automata a partir de er");
+            System.out.println("9.-Crear automata a partir de E.R.");
+            System.out.println("10.-Unir todos los automatas");
 
             switch(sc.nextInt())
             {
@@ -143,7 +145,12 @@ public class Menu {
                     System.out.println("Ingresa un token para este automata =)");
                     f.associateToken(io.askForToken());
                     break;
-              
+                case 10:
+                    UnionEspecial us=new UnionEspecial();
+                    us.unir(afns);
+                    
+                    System.out.println("Se unieron todos los AFNs generados");
+                    break;
                 default: System.exit(0);
             }    
         }
@@ -160,4 +167,5 @@ public class Menu {
         System.out.println("Seleccione el automata a agregar el token");
         selectAutomata().associateToken(io.askForToken());
     }
+    
 }
