@@ -46,6 +46,14 @@ public class ERAutomata2 {
         Afn f11=new Afn(')');
         f11.associateToken(Constants.PAR_D);
         
+        
+        Afn f12=new Afn('[');
+        f12.associateToken(Constants.COR_I);
+        Afn f13=new Afn(']');
+        f13.associateToken(Constants.COR_D);
+        Afn f14=new Afn('-');
+        f14.associateToken(Constants.GUI);
+        
         f1.addAFN(f2);
         f1.addAFN(f3);
         f1.addAFN(f4);
@@ -53,6 +61,9 @@ public class ERAutomata2 {
         f1.addAFN(f9);
         f1.addAFN(f10);
         f1.addAFN(f11);
+        f1.addAFN(f12);
+        f1.addAFN(f13);
+        f1.addAFN(f14);
         AfnConverter afnConverter=new AfnConverter();
         afd= afnConverter.convertAfn(f1);
         

@@ -30,14 +30,18 @@ public class Afn implements IAfn{
 
     public Afn(char c, char c0) {
         init();
-        for (int i = c; i <= c0; i++)
+        createBasic(c,c0);
+    }
+    public void createBasic(Character a,Character b)
+    {
+        for (int i = a; i <= b; i++)
         {
             alphabet.addElement((char) i);
         }
         
         State state1=new State(false);
         State state2=new State(true);
-        Transition t=new Transition(c,c0,state2);
+        Transition t=new Transition(a,b,state2);
         state1.addTransition(t);
         currentState=state1;
         states.add(state1);

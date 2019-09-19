@@ -133,7 +133,7 @@ public class Menu {
                 case 9:
                     IOClass io=new IOClass();
                     System.out.println("Proporciona una expresión de regular");
-                    String s=sc.next();;
+                    String s=sc.next();
                     ERAutomata2 erA=new ERAutomata2();
                     LexicAnalyzer lexic=new LexicAnalyzer(s,erA.getAfd().getAfdTable());
                     ERGrammar erG=new ERGrammar(lexic);

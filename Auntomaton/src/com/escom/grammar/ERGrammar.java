@@ -160,6 +160,41 @@ public class ERGrammar {
                 f.createBasic(lexic.getLexeme().charAt(0));
                 //f.associateToken(io.askForToken());
                 return true;
+            case Constants.COR_I:
+                
+                if(token==Constants.COR_I)
+                {
+                    return corchetes(f);
+                }
+                
+        }
+        return false;
+    }
+    public Boolean corchetes(IAfn f)
+    {
+        System.out.println("ENTRA 1");
+        Character a,b;
+        Integer token = lexic.getToken();
+        if(token==Constants.SIMB)
+        {
+            System.out.println("ENTRA 2");
+            a=lexic.getLexeme().charAt(0);
+            if(lexic.getToken()==Constants.GUI)
+            {
+                System.out.println("ENTRA 3");
+                if(lexic.getToken()==Constants.SIMB)
+                {
+                    System.out.println("ENTRA 4");
+                    b=lexic.getLexeme().charAt(0);
+                    f.createBasic(a,b);
+                    System.out.println("Crea basic con 2:");
+                    System.out.println(f.toString());
+                    if(lexic.getToken()==Constants.COR_D)
+                    {
+                        return true;
+                    }
+                }
+            }
         }
         return false;
     }

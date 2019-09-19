@@ -6,4 +6,12 @@ AT5.- P&P																50
 AT6.- P																	60
 
 
+AT1.- (P|N)&[0-9]+										10
+AT2.- (P|N)&[0-9]+&.&[0-9]+				20
+AT3.- L&(L|D)*															30
+AT4.- (S|T)+															40
+AT5.- P&P																50
+AT6.- P																	60
+
+
 Test: SSSP965PTTTP74.96STTSLDLDSSLDDDTPPP179SS																	
