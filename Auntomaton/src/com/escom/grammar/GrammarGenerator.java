@@ -14,19 +14,19 @@ import com.escom.automata.util.Constants;
  */
 public class GrammarGenerator {
     private LexicAnalyzer lexic;
-    boolean g(){
-	if(listaReglas()){
+    boolean G(Grammar g){
+	if(listaReglas(g)){
 		return true;
 	}
 	return false;
     }
 
-    boolean listaReglas(){
+    boolean listaReglas(Grammar g){
         int token;
-        if(regla()){
+        if(regla(g)){
             token=lexic.getToken();
             if(token == Constants.PC){
-                if(listaReglasP()){
+                if(listaReglasP(g)){
                     return true;
                 }
                 return false;
@@ -35,14 +35,14 @@ public class GrammarGenerator {
         return false;
     }
 
-    boolean listaReglasP(){
+    boolean listaReglasP(Grammar g){
         LexicAnalyzer E;
         int token;
         E=lexic.getStatus();
-        if(regla()){
+        if(regla(g)){
             token=lexic.getToken();
             if(token==Constants.PC){
-                if(listaReglasP())
+                if(listaReglasP(g))
                     return true;
                 return false;
             }
@@ -51,12 +51,14 @@ public class GrammarGenerator {
         return true;//Duda debe ser falso
     }
 
-    boolean regla(){
+    boolean regla(Grammar g){
+        DerivationNode r = new DerivationNode();
         int token;
-        if(ladoIzq()){
+        if(ladoIzq(r)){
             token=lexic.getToken();
             if(token==Constants.FLECHA){
-                if(ladosDerechos()){
+                if(ladosDerechos(r)){
+                    g.add(r);
                     return true;
                 }
             }
@@ -64,30 +66,34 @@ public class GrammarGenerator {
         return false;
     }
 
-    boolean ladoIzq(){
+    boolean ladoIzq(DerivationNode r){
         int token;
         token=lexic.getToken();
         if(token==Constants.SIMB){
+            r.setDerivationSybol(lexic.getLexeme(token));//revisar parametros de lexeme
             return true;//Ojoooooo
         }
         return false;
     }
 
-    boolean ladosDerechos(){
-        if(listaSimbolos()){
-            if(ladosDerechosP()){
+    boolean ladosDerechos(DerivationNode r){
+        if(listaSimbolos(r)){
+            if(ladosDerechosP(r)){
                 return true;
             }
         }
         return false;
     }
 
-    boolean ladosDerechosP(){
+    boolean ladosDerechosP(DerivationNode r){
+        DerivationNode n2 = r.getDerivA();
         int token;
         token=lexic.getToken();
         if(token==Constants.OR){
-            if(listaSimbolos()){
-                if(ladosDerechosP()){
+            if(listaSimbolos(r)){
+                n2.setDerivA(r.getDerivA());
+                r.setDerivA(n2);
+                if(ladosDerechosP(r)){
                     return true;
                 }
             }
@@ -96,22 +102,28 @@ public class GrammarGenerator {
         return true;
     }
 
-    boolean listaSimbolos(){
+    boolean listaSimbolos(DerivationNode r){
+        DerivationNode n = new DerivationNode();
         int token;
         token=lexic.getToken();
         if(token==Constants.SIMB){
-            if(listaSimbolosP()){
+            n.setDerivationSybol(lexic.getLexeme(token));//revisar
+            if(listaSimbolosP(n)){
+                r.setDerivA(n);
                 return true;
             }
         }
         return false;
     }
 
-    boolean listaSimbolosP(){
+    boolean listaSimbolosP(DerivationNode n1){
         int token;
+        DerivationNode n = new DerivationNode();
         token=lexic.getToken();
         if(token==Constants.SIMB){
-            if(listaSimbolosP()){
+            n.setDerivationSybol(lexic.getLexeme(token));
+            n1.setDerivA(n);
+            if(listaSimbolosP(n)){
                 return true;
             }
         }
