@@ -33,6 +33,19 @@ public class LexicAnalyzer {
         iniLexeme=0;
         lastLexeme=0;
     }
+
+    public LexicAnalyzer(Stack<Integer> p, AfdTable afdTable, String s, Boolean hadAcceptedState, Integer token, Integer actualCharacter, Integer iniLexeme, Integer lastLexeme, String lexeme) {
+        this.p = p;
+        this.afdTable = afdTable;
+        this.s = s;
+        this.hadAcceptedState = hadAcceptedState;
+        this.token = token;
+        this.actualCharacter = actualCharacter;
+        this.iniLexeme = iniLexeme;
+        this.lastLexeme = lastLexeme;
+        this.lexeme = lexeme;
+    }
+    
     public Integer getToken()
     {
         Integer tok=yyLex();//REVISAR
@@ -106,13 +119,21 @@ public class LexicAnalyzer {
         actualCharacter=++lastLexeme;
         return token;
     }
-    public void getStatus()
+    public LexicAnalyzer getStatus()
     {
-        
+        return new LexicAnalyzer(p, afdTable, s, hadAcceptedState, token, actualCharacter, iniLexeme, lastLexeme, lexeme);
     }
-    public void setStatus()
+    public void setStatus(LexicAnalyzer lexic)
     {
-        
+        this.p=lexic.getP();
+        this.afdTable=lexic.getAfdTable();
+        this.s=lexic.getS();
+        this.hadAcceptedState=lexic.getHadAcceptedState();
+        this.token=lexic.token;
+        this.actualCharacter=lexic.getActualCharacter();
+        this.iniLexeme=lexic.getIniLexeme();
+        this.lastLexeme=lexic.getLastLexeme();
+        this.lexeme=lexic.getLexeme();
     }
 
     public Stack<Integer> getP() {

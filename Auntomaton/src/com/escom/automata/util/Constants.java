@@ -16,5 +16,7 @@ public class Constants {
     public static final int END=0;
     public static final int END_CAD=(int)'$';
     public static final int ERROR=1000;
-    
+    public static final int PC=59;
+    public static final int FLECHA=240;
+    //public static final String FLECHA="->";
 }
