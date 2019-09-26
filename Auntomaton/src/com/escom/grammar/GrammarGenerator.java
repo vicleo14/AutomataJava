@@ -48,7 +48,7 @@ public class GrammarGenerator {
             }
         }
         lexic.setStatus(E);
-        return true;//Duda debe ser falso
+        return true;
     }
 
     boolean regla(Grammar g){
